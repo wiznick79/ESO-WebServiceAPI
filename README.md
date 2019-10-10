@@ -3,4 +3,5 @@ Don't be lazy, commit and push!
 
 When you add the DIP. 
 Soon! 
+DIP added!
 
