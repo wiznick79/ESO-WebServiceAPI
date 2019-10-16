@@ -5,3 +5,4 @@ When you add the DIP.
 Soon! 
 DIP added!
 
+Classes and Usecases Version 1 added!
