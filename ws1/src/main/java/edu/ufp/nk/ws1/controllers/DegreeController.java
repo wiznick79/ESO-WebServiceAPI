@@ -5,9 +5,8 @@ import edu.ufp.nk.ws1.repositories.DegreeRepo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/degree")
@@ -37,15 +36,14 @@ public class DegreeController {
 	}
 
 	@PostMapping
+	// TODO: Use code 201: Created
+	// TODO: Change return code when already exists.
 	public ResponseEntity<Degree> addDegree(@Valid @RequestBody Degree novo){
-		// TODO: Check if already exists
+		if(degreeRepo.findByName(novo.getName()) != null)
+			return ResponseEntity.notFound().build();
+
 		return ResponseEntity.ok(degreeRepo.save(novo));
 	}
 
-	/*
-	@PutMapping
-	public ResponseEntity<Degree> editDegree(@Valid @RequestBody Degree novo){
-		degreeRepo.findByName(novo.getName()).setName();
-	}
-	 */
+
 }
