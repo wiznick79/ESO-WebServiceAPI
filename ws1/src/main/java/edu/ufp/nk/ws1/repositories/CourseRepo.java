@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseRepo extends CrudRepository <Course, Long> {
-    Course findByName(String name);
-    Course findById(long id);
+	Course findByName(String name);
+	Course findById(long id);
 }
