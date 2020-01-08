@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.repositories.ExplainerRepo;
+import edu.ufp.nk.ws1.services.ExplainerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 @RequestMapping("/explainer")
 public class ExplainerController {
     private ExplainerRepo explainerRepo;
+    private ExplainerService explainerService;
 
     //Constructor
     public ExplainerController(ExplainerRepo explainerRepo) {

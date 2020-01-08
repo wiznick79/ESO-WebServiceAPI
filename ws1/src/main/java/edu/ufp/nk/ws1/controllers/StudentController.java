@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Student;
 import edu.ufp.nk.ws1.repositories.StudentRepo;
+import edu.ufp.nk.ws1.services.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 @RequestMapping("/student")
 public class StudentController {
     private StudentRepo studentRepo;
+    private StudentService studentService;
 
     //Constructor
     public StudentController(StudentRepo studentRepo) {

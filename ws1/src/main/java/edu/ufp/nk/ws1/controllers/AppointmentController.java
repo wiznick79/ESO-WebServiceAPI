@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.repositories.AppointmentRepo;
+import edu.ufp.nk.ws1.services.AppointmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 @RequestMapping("/appointment")
 public class AppointmentController {
     private AppointmentRepo appointmentRepo;
+    private AppointmentService appointmentService;
 
     //Constructor
     public AppointmentController(AppointmentRepo appointmentRepo){this.appointmentRepo=appointmentRepo;}
