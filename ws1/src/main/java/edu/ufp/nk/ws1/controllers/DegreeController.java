@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.repositories.DegreeRepo;
+import edu.ufp.nk.ws1.services.DegreeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import javax.validation.Valid;
 @RequestMapping("/degree")
 public class DegreeController {
 	private DegreeRepo degreeRepo;
-
+	private DegreeService degreeService;
 	// Constructor
 	public DegreeController (DegreeRepo degreeRepo){
 		this.degreeRepo = degreeRepo;

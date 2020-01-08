@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.repositories.LanguageRepo;
+import edu.ufp.nk.ws1.services.LanguageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 @RequestMapping("/language")
 public class LanguageController {
     private LanguageRepo languageRepo;
+    private LanguageService languageService;
 
     //Constructor
     public LanguageController(LanguageRepo languageRepo) {

@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.repositories.AvailabilityRepo;
+import edu.ufp.nk.ws1.services.AvailabilityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 @RequestMapping ("/availability")
 public class AvailabilityController {
     private AvailabilityRepo availabilityRepo;
+    private AvailabilityService availabilityService;
 
     //Constructor
     public AvailabilityController(AvailabilityRepo availabilityRepo) {
