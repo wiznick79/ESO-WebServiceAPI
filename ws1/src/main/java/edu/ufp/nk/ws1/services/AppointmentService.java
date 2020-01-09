@@ -2,8 +2,8 @@ package edu.ufp.nk.ws1.services;
 
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.repositories.AppointmentRepo;
-import edu.ufp.nk.ws1.services.filters.appointment.FilterAppointmentObject;
-import edu.ufp.nk.ws1.services.filters.appointment.FilterAppointmentService;
+//import edu.ufp.nk.ws1.services.filters.appointment.FilterAppointmentObject;
+//import edu.ufp.nk.ws1.services.filters.appointment.FilterAppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,12 @@ import java.util.Set;
 @Service
 public class AppointmentService {
     private AppointmentRepo appointmentRepo;
-    private FilterAppointmentService filterAppointmentService;
+   // private FilterAppointmentService filterAppointmentService;
 
     @Autowired
-    public AppointmentService(AppointmentRepo appointmentRepo, FilterAppointmentService filterAppointmentService){
+    public AppointmentService(AppointmentRepo appointmentRepo){
         this.appointmentRepo = appointmentRepo;
-        this.filterAppointmentService = filterAppointmentService;
+       // this.filterAppointmentService = filterAppointmentService;
     }
 
     public Set<Appointment> findAll(){
@@ -45,13 +45,14 @@ public class AppointmentService {
         Appointment createAppointment= this.appointmentRepo.save(appointment);
         return Optional.of(createAppointment);
     }
-
+/*
     public Set<Appointment> filterAppointments (Map<String, String> searchParams){
         FilterAppointmentObject filterAppointmentObject = new FilterAppointmentObject(searchParams);
         Set<Appointment> appointments = this.findAll();
 
         return this.filterAppointmentService.filter(appointments, filterAppointmentObject);
     }
+ */
 
     public Optional<Appointment> findByDate (LocalDate date) {
         return this.appointmentRepo.findByDate(date);
