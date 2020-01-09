@@ -1,4 +1,4 @@
-package edu.ufp.nk.ws1.services;
+package edu.ufp.nk.ws1.services.filters;
 
 import edu.ufp.nk.ws1.services.filters.FilterI;
 

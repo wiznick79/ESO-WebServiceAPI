@@ -3,49 +3,82 @@ package edu.ufp.nk.ws1.controllers;
 import edu.ufp.nk.ws1.models.Course;
 import edu.ufp.nk.ws1.repositories.CourseRepo;
 import edu.ufp.nk.ws1.services.CourseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 
 @Controller
 @RequestMapping("/course")
 public class CourseController {
-	private CourseRepo courseRepo;
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	private CourseService courseService;
 
 	// Constructor
-	public CourseController(CourseRepo courseRepo){
-		this.courseRepo = courseRepo;
+	@Autowired
+	public CourseController(CourseService courseService){
+		this.courseService = courseService;
 	}
 
 
-	@GetMapping
-	public ResponseEntity<Iterable<Course>> getAllCourses(){
-		return ResponseEntity.ok(this.courseRepo.findAll());
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<Iterable<Course>> getAllCourses()
+	{
+		this.logger.info("Received a get request");
+
+		return ResponseEntity.ok(this.courseService.findAll());
+
 	}
 
-	@GetMapping("/id={id}")
-	public ResponseEntity<Course> searchCourse(@PathVariable long id){
-		Course found = courseRepo.findById(id);
+	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
+	public ResponseEntity<Course> getCourseById(@PathVariable("id") long id) throws NoCourseException {
+		this.logger.info("Received a get request");
 
-		if(found == null)
-			return ResponseEntity.notFound().build();
-
-		return ResponseEntity.ok(found);
+		Optional<Course> optionalCourse = this.courseService.findById(id);
+		if (optionalCourse.isPresent()){
+			return ResponseEntity.ok(optionalCourse.get());
+	}
+		throw new NoCourseException(id);
 	}
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	// TODO: Use code 201: Created
 	// TODO: Change return code when already exists.
-	public ResponseEntity<Course> addCourse(@Valid @RequestBody Course novo){
-		if(courseRepo.findByName(novo.getName()) != null)
-			return ResponseEntity.notFound().build();
-
-		return ResponseEntity.ok(courseRepo.save(novo));
+	public ResponseEntity<Course> createCourse(@RequestBody Course course){
+		Optional<Course> courseOptional = this.courseService.createCourse(course);
+		if(courseOptional.isPresent()) {
+			return ResponseEntity.ok(courseOptional.get());
+		}
+		throw new CourseAlreadyExistsException(course.getName());
 	}
+
+
+
+	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such course")
+	private static class NoCourseException extends RuntimeException {
+		public NoCourseException(Long id) {
+			super("No such course with id: " + id);
+		}
+	}
+
+	@ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Course already exists")
+	private static class CourseAlreadyExistsException extends RuntimeException {
+
+		public CourseAlreadyExistsException(String name) {
+			super("A course with name: "+name+" already exists");
+		}
+	}
+
 
 
 }
