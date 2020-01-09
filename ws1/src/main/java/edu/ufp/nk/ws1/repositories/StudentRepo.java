@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface StudentRepo extends CrudRepository<Student, Long> {
     Optional<Student> findById(long id);
     Optional<Student> findByName(String name);
-    Optional<Student> findByStudent_number(int number);
+    Optional<Student> findByStudentNumber(int studentNumber);
 }
