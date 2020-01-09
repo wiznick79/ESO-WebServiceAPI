@@ -15,6 +15,9 @@ public class Availability extends BaseModel {
     private LocalTime end;
     private int day_of_week;
 
+    public Availability() {
+    }
+
     //Constructor
     public Availability(LocalTime start, LocalTime end, int day_of_week){
         this.start =start;

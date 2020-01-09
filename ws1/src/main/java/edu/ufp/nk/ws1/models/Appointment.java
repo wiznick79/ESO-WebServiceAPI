@@ -15,6 +15,8 @@ public class Appointment extends BaseModel {
     private LocalDate date;
     private LocalTime start;
 
+    public Appointment(){
+    }
 
     // Constructor
     public Appointment(LocalDate date, LocalTime start){
