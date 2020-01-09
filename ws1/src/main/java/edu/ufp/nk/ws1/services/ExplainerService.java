@@ -31,6 +31,8 @@ public class ExplainerService {
     }
 
     public Optional<Explainer> createExplainer(Explainer explainer){
+
+        //TODO: EXPLICADORES PODEM TER MESMO NOME TIRAR CONDIÇAO?
         Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(explainer.getName());
         if (optionalExplainer.isPresent()){
             return Optional.empty();
