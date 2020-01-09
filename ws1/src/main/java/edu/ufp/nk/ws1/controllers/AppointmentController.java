@@ -71,7 +71,7 @@ public class AppointmentController {
     private static class AppointmentAlreadyExistsException extends RuntimeException {
 
         public AppointmentAlreadyExistsException(LocalTime time, LocalDate date) {
-            super("An appointment on date: "+time+" "+date+" already exists");
+            super("An appointment on date: "+date+" "+time+" already exists");
         }
     }
 
