@@ -1,7 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Course;
-import edu.ufp.nk.ws1.repositories.CourseRepo;
 import edu.ufp.nk.ws1.services.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 
@@ -27,17 +25,16 @@ public class CourseController {
 	// Constructor
 	@Autowired
 	public CourseController(CourseService courseService){
+
 		this.courseService = courseService;
 	}
 
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Iterable<Course>> getAllCourses()
-	{
+	public ResponseEntity<Iterable<Course>> getAllCourses()	{
 		this.logger.info("Received a get request");
 
 		return ResponseEntity.ok(this.courseService.findAll());
-
 	}
 
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
@@ -47,7 +44,7 @@ public class CourseController {
 		Optional<Course> optionalCourse = this.courseService.findById(id);
 		if (optionalCourse.isPresent()){
 			return ResponseEntity.ok(optionalCourse.get());
-	}
+		}
 		throw new NoCourseException(id);
 	}
 
@@ -61,8 +58,6 @@ public class CourseController {
 		}
 		throw new CourseAlreadyExistsException(course.getName());
 	}
-
-
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such course")
 	private static class NoCourseException extends RuntimeException {
@@ -78,7 +73,5 @@ public class CourseController {
 			super("A course with name: "+name+" already exists");
 		}
 	}
-
-
 
 }

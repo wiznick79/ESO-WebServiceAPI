@@ -17,9 +17,6 @@ public class Course extends BaseModel {
 	@OneToOne
 	private Degree degree;
 
-	public Course() {
-	}
-
 	// Constructor
 	public Course(String name){
 		this.name = name;
