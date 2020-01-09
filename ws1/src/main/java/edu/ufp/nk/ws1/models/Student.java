@@ -13,6 +13,9 @@ public class Student extends BaseModel {
     private String name;
     private int student_number;
 
+    public Student() {
+    }
+
     //Constructor
     public Student(String Name, int student_number){
         this.name=name;

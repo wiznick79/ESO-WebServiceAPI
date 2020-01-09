@@ -12,6 +12,9 @@ public class Language extends BaseModel {
     //Variables
     private String name;
 
+    public Language() {
+    }
+
     //Constructor
     public Language(String name){
         this.name=name;
