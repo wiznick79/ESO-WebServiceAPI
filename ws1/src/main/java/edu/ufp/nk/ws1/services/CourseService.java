@@ -31,8 +31,9 @@ public class CourseService {
         return courses;
     }
 
-
-    public Optional<Course> findById(Long id) {return this.courseRepo.findById(id);}
+    public Optional<Course> findById(Long id) {
+        return this.courseRepo.findById(id);
+    }
 
     public Optional<Course> createCourse(Course course){
         Optional<Course> optionalCourse = this.courseRepo.findByName(course.getName());
@@ -43,8 +44,6 @@ public class CourseService {
         return Optional.of(createCourse);
     }
 
-
-
     public Set<Course> filterCourses (Map<String, String> searchParams){
         FilterCourseObject filterCourseObject = new FilterCourseObject(searchParams);
         Set<Course> courses = this.findAll();
@@ -52,5 +51,7 @@ public class CourseService {
         return this.filterCourseService.filter(courses, filterCourseObject);
     }
 
-    public Optional<Course> findByName (String name) { return this.courseRepo.findByName(name);}
+    public Optional<Course> findByName (String name) {
+        return this.courseRepo.findByName(name);
+    }
 }

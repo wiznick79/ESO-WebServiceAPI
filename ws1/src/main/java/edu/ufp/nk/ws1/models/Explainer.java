@@ -12,9 +12,6 @@ public class Explainer extends BaseModel {
     //Variables
     private String name;
 
-    public Explainer() {
-    }
-
     //Constructor
     public Explainer (String name){this.name=name;}
 

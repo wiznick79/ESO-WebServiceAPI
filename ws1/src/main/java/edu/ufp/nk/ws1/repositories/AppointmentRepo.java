@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Repository
 public interface AppointmentRepo extends CrudRepository<Appointment, Long> {
-    Appointment findById (long id);
-    Appointment findByDate (LocalDate date);
-    Appointment findByStartAndDate (LocalTime time, LocalDate date);
+    Optional<Appointment> findById (long id);
+    Optional<Appointment> findByDate (LocalDate date);
+    Optional<Appointment> findByStartAndDate (LocalTime time, LocalDate date);
 }

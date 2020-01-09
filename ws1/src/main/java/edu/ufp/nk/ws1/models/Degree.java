@@ -15,9 +15,6 @@ public class Degree extends BaseModel {
 	@Column(unique = true)
 	private String name;
 
-	public Degree() {
-	}
-
 	// Constructor
 	public Degree(String name){
 		this.name = name;
