@@ -11,17 +11,17 @@ import javax.persistence.Entity;
 public class Student extends BaseModel {
     //Variables
     private String name;
-    private int student_number;
+    private int studentNumber;
 
     //Constructor
-    public Student(String Name, int student_number){
-        this.name=name;
-        this.student_number=student_number;
+    public Student(String name, int studentNumber){
+        this.name = name;
+        this.studentNumber = studentNumber;
     }
 
     //Gets & Sets
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
-    public int getStudent_number() {return student_number;}
-    public void setStudent_number(int student_number) {this.student_number = student_number;}
+    public int getStudentNumber() {return studentNumber;}
+    public void setStudentNumber(int studentNumber) {this.studentNumber = studentNumber;}
 }

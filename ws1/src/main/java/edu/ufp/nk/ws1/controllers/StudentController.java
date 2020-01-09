@@ -1,7 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Student;
-import edu.ufp.nk.ws1.repositories.StudentRepo;
 import edu.ufp.nk.ws1.services.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -67,7 +65,7 @@ public class StudentController {
         if (studentOptional.isPresent()){
             return ResponseEntity.ok(studentOptional.get());
         }
-        throw new StudentAlreadyExistsException(student.getStudent_number());
+        throw new StudentAlreadyExistsException(student.getStudentNumber());
     }
 
 

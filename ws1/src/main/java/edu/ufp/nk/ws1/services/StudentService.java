@@ -34,10 +34,10 @@ public class StudentService {
 
     public Optional<Student> findByName(String name) {return this.studentRepo.findByName(name);}
 
-    public Optional<Student> findByNumber(int number) {return this.studentRepo.findByStudent_number(number);}
+    public Optional<Student> findByNumber(int number) {return this.studentRepo.findByStudentNumber(number);}
 
     public Optional<Student> createStudent(Student student){
-        Optional<Student> optionalStudent = this.studentRepo.findByStudent_number(student.getStudent_number());
+        Optional<Student> optionalStudent = this.studentRepo.findByStudentNumber(student.getStudentNumber());
         if (optionalStudent.isPresent()){
             return Optional.empty();
         }
