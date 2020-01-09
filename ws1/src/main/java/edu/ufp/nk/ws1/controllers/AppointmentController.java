@@ -26,7 +26,8 @@ public class AppointmentController {
     //Constructor
     @Autowired
     public AppointmentController(AppointmentService appointmentService) {
-        this.appointmentService=appointmentService;
+
+        this.appointmentService = appointmentService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -58,7 +59,6 @@ public class AppointmentController {
         }
         throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(),appointment.getDate());
     }
-
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such appointment")
     private static class NoAppointmentException extends RuntimeException {
