@@ -5,10 +5,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Repository
 public interface AvailabilityRepo extends CrudRepository<Availability, Long> {
-    Availability findById (long id);
-    Availability findByDay_of_weekAndStart(int day, LocalTime start);
+    Optional<Availability> findById (long id);
+    Optional<Availability> findByDayOfWeekAndStart (int day, LocalTime start);
 
 }

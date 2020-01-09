@@ -13,13 +13,13 @@ public class Availability extends BaseModel {
     //Variables
     private LocalTime start;
     private LocalTime end;
-    private int day_of_week;
+    private int dayOfWeek;
 
     //Constructor
-    public Availability(LocalTime start, LocalTime end, int day_of_week){
+    public Availability(LocalTime start, LocalTime end, int dayOfWeek){
         this.start =start;
         this.end = end;
-        this.day_of_week= day_of_week;
+        this.dayOfWeek = dayOfWeek;
     }
 
     //Gets & Sets
@@ -27,6 +27,6 @@ public class Availability extends BaseModel {
     public LocalTime getStart(){return start;}
     public void setEnd(LocalTime end){this.end=end;}
     public LocalTime getEnd(){return end;}
-    public void setDay_of_week(int day_of_week){this.day_of_week=day_of_week;}
-    public int getDay_of_week(){return day_of_week;}
+    public void setDayOfWeek(int dayOfWeek){this.dayOfWeek = dayOfWeek;}
+    public int getDayOfWeek(){return dayOfWeek;}
 }

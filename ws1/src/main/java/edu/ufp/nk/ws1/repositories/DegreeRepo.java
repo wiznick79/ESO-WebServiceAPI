@@ -4,8 +4,10 @@ import edu.ufp.nk.ws1.models.Degree;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface DegreeRepo extends CrudRepository <Degree, Long> {
-	Degree findByName(String name);
-	Degree findById(long id);
+	Optional<Degree> findByName(String name);
+	Optional<Degree> findById(long id);
 }
