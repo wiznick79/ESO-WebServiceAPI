@@ -32,7 +32,7 @@ public class CollegeController {
         return ResponseEntity.ok(this.collegeService.findAll());
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/id={id}",method = RequestMethod.GET)
     public ResponseEntity<College> getCollegeById(@PathVariable("id") Long id) throws NoCollegeExcpetion {
         this.logger.info("Received a get request");
 

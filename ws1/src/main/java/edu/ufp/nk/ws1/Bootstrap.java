@@ -14,11 +14,15 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
 	private DegreeRepo degreeRepo;
 	private CourseRepo courseRepo;
+	private StudentRepo studentRepo;
+	private CollegeRepo collegeRepo;
 
 
-	public Bootstrap(DegreeRepo degreeRepo, CourseRepo courseRepo) {
+	public Bootstrap(DegreeRepo degreeRepo, CourseRepo courseRepo, StudentRepo studentRepo, CollegeRepo collegeRepo) {
 		this.setDegreeRepo(degreeRepo);
 		this.setCourseRepo(courseRepo);
+		this.setStudentRepo(studentRepo);
+		this.setCollegeRepo(collegeRepo);
 	}
 
 	@Override
@@ -39,6 +43,17 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 		Course c3 = new Course("Base de Dados I");
 		Course c4 = new Course("Multimédia I");
 
+		Student s1 = new Student("Alvaro Magalhães", 37000);
+		Student s2 = new Student("Pedro Alves", 123124);
+
+		College cl1 = new College("Faculdade Ciencias");
+		College cl2 = new College("Faculdade de saude");
+
+
+		enfermagem.setCollege(cl2);
+		engCivil.setCollege(cl1);
+		engInfo.setCollege(cl1);
+
 		c1.setDegree(engInfo);
 		c2.setDegree(engCivil);
 		c3.setDegree(psicologia);
@@ -53,6 +68,13 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 		this.getCourseRepo().save(c2);
 		this.getCourseRepo().save(c3);
 		this.getCourseRepo().save(c4);
+
+		this.getStudentRepo().save(s1);
+		this.getStudentRepo().save(s2);
+
+		this.getCollegeRepo().save(cl1);
+		this.getCollegeRepo().save(cl2);
+
 
 		System.out.println();
 		System.out.println(this.getDegreeRepo().findAll());
@@ -76,4 +98,18 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 		this.courseRepo = courseRepo;
 	}
 
+	public StudentRepo getStudentRepo() {
+		return this.studentRepo;
+	}
+	public void setStudentRepo(StudentRepo studentRepo) {
+		this.studentRepo = studentRepo;
+	}
+
+	public CollegeRepo getCollegeRepo() {
+		return collegeRepo;
+	}
+
+	public void setCollegeRepo(CollegeRepo collegeRepo) {
+		this.collegeRepo = collegeRepo;
+	}
 }
