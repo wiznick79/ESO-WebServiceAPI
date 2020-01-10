@@ -41,18 +41,18 @@ public class StudentController {
         if(optionalStudent.isPresent()){
             return ResponseEntity.ok(optionalStudent.get());
         }
-        throw new NoStudentException(id);
+        throw new NoStudentException();
     }
 
     @RequestMapping(value = "/number={number}", method = RequestMethod.GET)
-    public ResponseEntity<Student> getStudentByStudentNumber(@PathVariable("number") int number) throws NoStudentNumberException{
+    public ResponseEntity<Student> getStudentByStudentNumber(@PathVariable("number") int number) throws NoStudentException{
         this.logger.info("Received a get request");
 
         Optional<Student> optionalStudent=this.studentService.findByNumber(number);
         if(optionalStudent.isPresent()){
             return ResponseEntity.ok(optionalStudent.get());
         }
-        throw new NoStudentNumberException(number);
+        throw new NoStudentException();
     }
 
 
@@ -70,15 +70,8 @@ public class StudentController {
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such student")
     private static class NoStudentException extends RuntimeException {
-        public NoStudentException(Long id) {
-            super("No such student with id: "+id);
-        }
-    }
-
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such student")
-    private static class NoStudentNumberException extends RuntimeException {
-        public NoStudentNumberException(int number) {
-            super("No such student with number: "+number);
+        public NoStudentException() {
+            super("No such student");
         }
     }
 
