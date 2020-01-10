@@ -27,7 +27,6 @@ public class CourseController {
 		this.courseService = courseService;
 	}
 
-
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Iterable<Course>> getAllCourses()	{
 		this.logger.info("Received a get request");
@@ -47,8 +46,6 @@ public class CourseController {
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	// TODO: Use code 201: Created
-	// TODO: Change return code when already exists.
 	public ResponseEntity<Course> createCourse(@RequestBody Course course){
 		Optional<Course> courseOptional = this.courseService.createCourse(course);
 		if(courseOptional.isPresent()) {
@@ -80,5 +77,4 @@ public class CourseController {
 			super("A course with name: "+name+" already exists");
 		}
 	}
-
 }
