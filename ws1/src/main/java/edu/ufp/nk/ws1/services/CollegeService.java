@@ -29,12 +29,10 @@ public class CollegeService {
     }
 
     public Optional<College> findByName(String name) {
-
         return this.collegeRepo.findByName(name);
     }
 
     public Optional<College> findById(Long id) {
-
         return this.collegeRepo.findById(id);
     }
 
@@ -46,5 +44,4 @@ public class CollegeService {
         College createdCollege=this.collegeRepo.save(college);
         return Optional.of(createdCollege);
     }
-
 }

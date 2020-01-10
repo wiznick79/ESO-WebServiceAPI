@@ -29,14 +29,12 @@ public class ExplainerController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Explainer>> getAllExplainers(){
         this.logger.info("Received a get request");
-
         return ResponseEntity.ok(this.explainerService.findAll());
     }
 
     @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
     public ResponseEntity<Explainer> getExplainerById(@PathVariable("id") long id) throws NoExplainerException{
         this.logger.info("Received a get request");
-
         Optional<Explainer> optionalExplainer = this.explainerService.findById(id);
         if(optionalExplainer.isPresent()){
             return ResponseEntity.ok(optionalExplainer.get());
@@ -47,7 +45,6 @@ public class ExplainerController {
     @RequestMapping(value = "/name={name}", method = RequestMethod.GET)
     public ResponseEntity<Explainer> getExplainerByName(@PathVariable("name") String name) throws NoExplainerException{
         this.logger.info("Received a get request");
-
         Optional<Explainer> optionalExplainer = this.explainerService.findByName(name);
         if(optionalExplainer.isPresent()){
             return ResponseEntity.ok(optionalExplainer.get());
@@ -56,31 +53,25 @@ public class ExplainerController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    // TODO: Use code 201: Created
-    // TODO: Change return code when already exists.
-    // TODO: Verificar o findByStartAndDate
     public ResponseEntity<Explainer> createExplainer(@RequestBody Explainer explainer){
         Optional<Explainer> explainerOptional = this.explainerService.createExplainer(explainer);
-       // if (explainerOptional.isPresent()){
+        if (explainerOptional.isPresent()){
             return ResponseEntity.ok(explainerOptional.get());
-        //}
-        //throw new ExplainerAlreadyExistsExcpetion(explainer.getName());
+        }
+        throw new ExplainerAlreadyExistsExcpetion(explainer.getName());
     }
-
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such explainer")
     private static class NoExplainerException extends RuntimeException {
-
         public NoExplainerException() {
             super("No such explainer with");
         }
     }
 
-   /* @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Explainer already exists")
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Explainer already exists")
     private static class ExplainerAlreadyExistsExcpetion extends RuntimeException {
         public ExplainerAlreadyExistsExcpetion(String name) {
-            super("A explainer with name: "+name+" already exists");
+            super("An explainer with name: "+name+" already exists");
         }
-    }*/
-
+    }
 }
