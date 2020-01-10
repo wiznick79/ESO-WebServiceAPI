@@ -54,9 +54,13 @@ public class CourseService {
         if (optionalCourse.isPresent()){
             return Optional.empty();
         }
-        optionalDegree.ifPresent(course::setDegree);
-        Course createCourse = this.courseRepo.save(course);
 
+        if (optionalDegree.isPresent()) {
+            course.setDegree(optionalDegree.get());
+        }
+        else return Optional.empty();
+
+        Course createCourse = this.courseRepo.save(course);
         return Optional.of(createCourse);
     }
 
