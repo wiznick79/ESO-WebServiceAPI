@@ -3,6 +3,7 @@ package edu.ufp.nk.ws1.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Data
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 public class Student extends BaseModel {
     //Variables
     private String name;
+    @Column(unique = true)
     private int studentNumber;
 
     //Constructor
