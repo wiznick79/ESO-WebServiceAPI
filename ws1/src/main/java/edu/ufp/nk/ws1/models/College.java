@@ -18,9 +18,16 @@ public class College extends BaseModel {
     @Column(unique = true)
     private String name;
 
+    public College(String name){
+        this.name = name;
+    }
+
+
     @OneToMany(mappedBy = "college",cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private Set<Degree> degrees = new HashSet<>();
+
+
 
     public String getName() {
         return name;

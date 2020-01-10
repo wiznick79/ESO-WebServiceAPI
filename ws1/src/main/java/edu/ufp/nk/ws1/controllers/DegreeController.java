@@ -36,14 +36,14 @@ public class DegreeController {
 	}
 
 	@RequestMapping(value = "/id={id}", method = RequestMethod.GET)
-	public ResponseEntity<Degree> getDegreeById(@PathVariable("id") long id) throws DegreeController.NoDegreeException {
+	public ResponseEntity<Degree> getDegreeById(@PathVariable("id") long id) throws NoDegreeException {
 		this.logger.info("Received a get request");
 
 		Optional<Degree> optionalDegree = this.degreeService.findById(id);
 		if (optionalDegree.isPresent()) {
 			return ResponseEntity.ok(optionalDegree.get());
 		}
-		throw new DegreeController.NoDegreeException(id);
+		throw new NoDegreeException(id);
 	}
 
 	@PostMapping(value = "/{college}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -54,7 +54,7 @@ public class DegreeController {
 		if(degreeOptional.isPresent()) {
 			return ResponseEntity.ok(degreeOptional.get());
 		}
-		throw new DegreeController.DegreeAlreadyExistsException(degree.getName());
+		throw new DegreeAlreadyExistsException(degree.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such degree")
