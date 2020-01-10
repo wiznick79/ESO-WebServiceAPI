@@ -1,7 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Course;
-import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.services.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
