@@ -35,11 +35,11 @@ public class DegreeControllerTest {
 
     @Test
     void createDegreeByCollege() throws Exception{
-        Degree degree = new Degree("Eng Infomartica");
+       Degree degree = new Degree("Eng Infomartica");
         College college = new College("Ciencias");
         college.setId(2L);
 
-        String jsonRequest = this.objectMapper.writeValueAsString(degree);
+       String jsonRequest = this.objectMapper.writeValueAsString(degree);
 
         when(degreeService.createDegreeByCollege(degree, 2L)).thenReturn(Optional.of(degree));
 
@@ -51,16 +51,14 @@ public class DegreeControllerTest {
 
 
         //Existing Degree
-        Degree existingDegree = degree;
-
+        Degree existingDegree = new Degree("Eng Infomartica");
+        when(this.degreeService.createDegreeByCollege(existingDegree, 2L)).thenReturn(Optional.empty());
         String existingDegreeJson = this.objectMapper.writeValueAsString(existingDegree);
-
-        when(this.degreeService.createDegreeByCollege(existingDegree, college.getId())).thenReturn(Optional.empty());
-
         this.mockMvc.perform(
                 post("/degree/2").contentType(MediaType.APPLICATION_JSON).content(existingDegreeJson)
         ).andExpect(
-                status().isBadRequest()
+                status().isNotFound()
+                //TODO:................
         );
 
         //Non Existing College
@@ -68,7 +66,7 @@ public class DegreeControllerTest {
 
         String jsonCollegeNorExistRequest = this.objectMapper.writeValueAsString(nDegree);
 
-        when(degreeService.createDegreeByCollege(degree, 10L)).thenReturn(Optional.of(degree));
+        when(degreeService.createDegreeByCollege(nDegree, 10L)).thenReturn(Optional.of(nDegree));
 
         this.mockMvc.perform(
                 post("/degree/100000").contentType(MediaType.APPLICATION_JSON).content(jsonCollegeNorExistRequest)

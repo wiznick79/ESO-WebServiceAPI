@@ -62,7 +62,8 @@ public class CourseControllerTest {
         this.mockMvc.perform(
                 post("/course/1").contentType(MediaType.APPLICATION_JSON).content(existingCourseJson)
         ).andExpect(
-                status().isBadRequest()
+                status().isNotFound()
+                //TODO:................
         );
 
 

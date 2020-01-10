@@ -32,15 +32,15 @@ public class LanguageController {
         return ResponseEntity.ok(this.languageService.findAll());
     }
 
-    @RequestMapping(value = "/id", method = RequestMethod.GET)
-    public ResponseEntity<Language> getLanguageById(@PathVariable("id") long id) throws LanguageController.NoLanguageException {
+    @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
+    public ResponseEntity<Language> getLanguageById(@PathVariable("id") long id) throws NoLanguageException {
         this.logger.info("Received a get request");
 
         Optional<Language> optionalLanguage = this.languageService.findById(id);
         if (optionalLanguage.isPresent()){
             return ResponseEntity.ok(optionalLanguage.get());
         }
-        throw new LanguageController.NoLanguageException(id);
+        throw new NoLanguageException(id);
     }
 
 
@@ -50,7 +50,7 @@ public class LanguageController {
         if(languageOptional.isPresent()) {
             return ResponseEntity.ok(languageOptional.get());
         }
-        throw new LanguageController.LanguageAlreadyExistsException(language.getName());
+        throw new LanguageAlreadyExistsException(language.getName());
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -60,7 +60,7 @@ public class LanguageController {
         if(languageOptional.isPresent()) {
             return ResponseEntity.ok(languageOptional.get());
         }
-        throw new LanguageController.LanguageAlreadyExistsException(language.getName());
+        throw new LanguageAlreadyExistsException(language.getName());
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such language")
