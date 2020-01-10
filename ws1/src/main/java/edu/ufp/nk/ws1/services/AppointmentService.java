@@ -2,8 +2,6 @@ package edu.ufp.nk.ws1.services;
 
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.repositories.AppointmentRepo;
-//import edu.ufp.nk.ws1.services.filters.appointment.FilterAppointmentObject;
-//import edu.ufp.nk.ws1.services.filters.appointment.FilterAppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
