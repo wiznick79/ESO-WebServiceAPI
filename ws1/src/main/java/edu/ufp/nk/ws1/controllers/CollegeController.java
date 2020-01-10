@@ -53,7 +53,6 @@ public class CollegeController {
 
     }
 
-
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such college")
     private static class NoCollegeExcpetion extends RuntimeException {
 
@@ -69,6 +68,4 @@ public class CollegeController {
             super("A college with name: "+name+" already exists");
         }
     }
-
-
 }
