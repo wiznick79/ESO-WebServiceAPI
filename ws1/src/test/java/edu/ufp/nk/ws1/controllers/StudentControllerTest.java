@@ -9,11 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,8 +60,23 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void getAllStudents(){
+    public void getAllStudents() throws Exception {
+        Student student = new Student("asda", 123);
+        Student student1 = new Student("asdas", 2134);
+        Set<Student> students = new HashSet<>();
+        students.add(student1);
+        students.add(student);
+        when(this.studentService.findAll()).thenReturn(students);
 
+        String responseJson=this.mockMvc.perform(
+                get("/student")
+        ).andExpect(
+                status().isOk()
+        ).andReturn().getResponse().getContentAsString();
+
+
+        Student responseStudent = this.objectMapper.readValue(responseJson, Student.class);
+        assertEquals(student, responseStudent);
     }
 
    @Test
@@ -68,7 +84,7 @@ public class StudentControllerTest {
         Student student = new Student("asda", 123);
         student.setId(1L);
 
-        when(this.studentService.findById(1l)).thenReturn(Optional.of(student));
+        when(this.studentService.findById(1L)).thenReturn(Optional.of(student));
 
         String responseJson=this.mockMvc.perform(
                 get("/student/id=1")
@@ -103,6 +119,7 @@ public class StudentControllerTest {
 
 
         Student responseStudent = this.objectMapper.readValue(responseJson, Student.class);
+        this.objectMapper.readValue(responseJson,Student.class);
         assertEquals(student, responseStudent);
 
         this.mockMvc.perform(
