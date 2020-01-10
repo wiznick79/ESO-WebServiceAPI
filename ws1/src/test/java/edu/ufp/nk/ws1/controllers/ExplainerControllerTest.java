@@ -103,7 +103,7 @@ public class ExplainerControllerTest {
         assertEquals(explainer, responseExplainer);
 
         this.mockMvc.perform(
-                get("/explainer/name = 2")
+                get("/explainer/name=2")
         ).andExpect(
                 status().isNotFound()
         );
