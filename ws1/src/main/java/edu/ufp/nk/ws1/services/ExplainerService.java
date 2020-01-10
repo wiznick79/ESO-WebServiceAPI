@@ -1,10 +1,14 @@
 package edu.ufp.nk.ws1.services;
 
+import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.models.Explainer;
+import edu.ufp.nk.ws1.repositories.AvailabilityRepo;
 import edu.ufp.nk.ws1.repositories.ExplainerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -12,10 +16,12 @@ import java.util.Set;
 @Service
 public class ExplainerService {
     private ExplainerRepo explainerRepo;
+    private AvailabilityRepo availabilityRepo;
 
     @Autowired
-    public ExplainerService (ExplainerRepo explainerRepo){
+    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo){
         this.explainerRepo=explainerRepo;
+        this.availabilityRepo = availabilityRepo;
     }
 
     public Set<Explainer> findAll(){
@@ -40,6 +46,26 @@ public class ExplainerService {
         Explainer createdExplainer=this.explainerRepo.save(explainer);
         return Optional.of(createdExplainer);
     }
+
+    public Optional<Explainer> addAvailabilitie(Long id, Availability availability){
+        Optional<Explainer> optionalExplainer = this.explainerRepo.findById(id);
+
+        if(optionalExplainer.isEmpty())
+            return Optional.empty();
+
+        // TODO: MAKE ALL THE TESTS
+        availability.setExplainer(optionalExplainer.get());
+        optionalExplainer.get().getAvailabilities().add(availability);
+        this.availabilityRepo.save(availability);
+        this.explainerRepo.save(optionalExplainer.get());
+
+        return optionalExplainer;
+    }
+
+
+
+
+
 
     public Optional<Explainer> findByName(String name) {return this.explainerRepo.findByName(name);}
 }

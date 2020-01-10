@@ -34,7 +34,7 @@ public class CourseService {
     }
 
 
-    public Optional<Course> createCourseByDegree(Course course, Long degree){
+        public Optional<Course> createCourseByDegree(Course course, Long degree){
         Optional<Course> optionalCourse = this.courseRepo.findByName(course.getName());
         Optional<Degree> optionalDegree = this.degreeRepo.findById(degree);
         if (optionalCourse.isPresent()){

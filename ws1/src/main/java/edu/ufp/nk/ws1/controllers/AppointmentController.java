@@ -60,6 +60,12 @@ public class AppointmentController {
         throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(),appointment.getDate());
     }
 
+
+
+
+
+
+
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such appointment")
     private static class NoAppointmentException extends RuntimeException {
         public NoAppointmentException(Long id) {

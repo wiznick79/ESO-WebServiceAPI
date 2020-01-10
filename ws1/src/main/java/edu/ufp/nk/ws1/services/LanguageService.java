@@ -39,6 +39,21 @@ public class LanguageService {
         return Optional.of(createLanguage);
     }
 
+    public Optional<Language> updateLanguage(Long id, Language language){
+        Optional<Language> optionalLanguage = this.languageRepo.findById(id);
+
+        if(this.languageRepo.findByName(language.getName()).isPresent())
+            return Optional.empty();
+
+        if(optionalLanguage.isPresent()){
+            optionalLanguage.get().setName(language.getName());
+            this.languageRepo.save(optionalLanguage.get());
+            return optionalLanguage;
+        }
+
+        return Optional.empty();
+    }
+
     public Optional<Language> findByName (String name) {
         return this.languageRepo.findByName(name);
     }
