@@ -4,11 +4,9 @@ import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.repositories.AppointmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 

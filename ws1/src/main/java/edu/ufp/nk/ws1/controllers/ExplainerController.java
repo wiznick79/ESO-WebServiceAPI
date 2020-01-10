@@ -1,7 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Explainer;
-import edu.ufp.nk.ws1.repositories.ExplainerRepo;
 import edu.ufp.nk.ws1.services.ExplainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @Controller

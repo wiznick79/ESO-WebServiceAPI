@@ -1,8 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Language;
-import edu.ufp.nk.ws1.models.Language;
-import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.LanguageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
