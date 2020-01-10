@@ -1,7 +1,9 @@
 package edu.ufp.nk.ws1.services;
 
 import edu.ufp.nk.ws1.models.Course;
+import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.repositories.CourseRepo;
+import edu.ufp.nk.ws1.repositories.DegreeRepo;
 import edu.ufp.nk.ws1.services.filters.course.FilterCourseObject;
 import edu.ufp.nk.ws1.services.filters.course.FilterCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,13 @@ import java.util.Set;
 public class CourseService {
     private CourseRepo courseRepo;
     private FilterCourseService filterCourseService;
+    private DegreeRepo degreeRepo;
 
     @Autowired
-    public CourseService(CourseRepo courseRepo, FilterCourseService filterCourseService){
+    public CourseService(CourseRepo courseRepo, FilterCourseService filterCourseService, DegreeRepo degreeRepo){
         this.courseRepo=courseRepo;
         this.filterCourseService = filterCourseService;
+        this.degreeRepo=degreeRepo;
     }
 
     public Set<Course> findAll(){
@@ -41,6 +45,18 @@ public class CourseService {
             return Optional.empty();
         }
         Course createCourse= this.courseRepo.save(course);
+        return Optional.of(createCourse);
+    }
+
+    public Optional<Course> createCourseByDegree(Course course, Long degree){
+        Optional<Course> optionalCourse = this.courseRepo.findByName(course.getName());
+        Optional<Degree> optionalDegree = this.degreeRepo.findById(degree);
+        if (optionalCourse.isPresent()){
+            return Optional.empty();
+        }
+        optionalDegree.ifPresent(course::setDegree);
+        Course createCourse = this.courseRepo.save(course);
+
         return Optional.of(createCourse);
     }
 
