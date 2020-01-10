@@ -1,7 +1,9 @@
 package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Course;
+import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.services.CourseService;
+import edu.ufp.nk.ws1.services.DegreeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,14 @@ public class CourseController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private CourseService courseService;
+	private DegreeService degreeService;
 
 	// Constructor
 	@Autowired
-	public CourseController(CourseService courseService){
-
+	public CourseController(CourseService courseService, DegreeService degreeService){
 		this.courseService = courseService;
+		this.degreeService = degreeService;
 	}
-
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Iterable<Course>> getAllCourses()	{
@@ -47,8 +49,6 @@ public class CourseController {
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	// TODO: Use code 201: Created
-	// TODO: Change return code when already exists.
 	public ResponseEntity<Course> createCourse(@RequestBody Course course){
 		Optional<Course> courseOptional = this.courseService.createCourse(course);
 		if(courseOptional.isPresent()) {
@@ -63,7 +63,11 @@ public class CourseController {
 		if(courseOptional.isPresent()) {
 			return ResponseEntity.ok(courseOptional.get());
 		}
-		throw new CourseAlreadyExistsException(course.getName());
+		Optional<Degree> degreeOptional = degreeService.findById(degree);
+		if (degreeOptional.isPresent()) {
+			throw new CourseAlreadyExistsException(course.getName());
+		}
+		else throw new NoDegreeException(degree);
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such course")
@@ -75,10 +79,15 @@ public class CourseController {
 
 	@ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Course already exists")
 	private static class CourseAlreadyExistsException extends RuntimeException {
-
 		public CourseAlreadyExistsException(String name) {
 			super("A course with name: "+name+" already exists");
 		}
 	}
 
+	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such degree")
+	private static class NoDegreeException extends RuntimeException {
+		public NoDegreeException(Long id) {
+			super("No such degree with id: " + id);
+		}
+	}
 }
