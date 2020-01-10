@@ -32,7 +32,7 @@ public class LanguageController {
         return ResponseEntity.ok(this.languageService.findAll());
     }
 
-    @RequestMapping(value = "/id", method = RequestMethod.GET)
+    @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
     public ResponseEntity<Language> getLanguageById(@PathVariable("id") long id) throws NoLanguageException {
         this.logger.info("Received a get request");
 
