@@ -46,11 +46,11 @@ public class DegreeController {
 		throw new DegreeController.NoDegreeException(id);
 	}
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/{college}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	// TODO: Use code 201: Created
 	// TODO: Change return code when already exists.
-	public ResponseEntity<Degree> createDegree(@RequestBody Degree degree) {
-		Optional<Degree> degreeOptional = this.degreeService.createDegree(degree);
+	public ResponseEntity<Degree> createDegreeByCollege(@RequestBody Degree degree, @PathVariable Long college) {
+		Optional<Degree> degreeOptional = this.degreeService.createDegreeByCollege(degree, college);
 		if(degreeOptional.isPresent()) {
 			return ResponseEntity.ok(degreeOptional.get());
 		}
