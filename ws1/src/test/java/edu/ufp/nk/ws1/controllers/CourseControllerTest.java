@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Course;
 import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.services.CourseService;
+import edu.ufp.nk.ws1.services.DegreeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,6 +31,8 @@ public class CourseControllerTest {
 
     @MockBean
     private CourseService courseService;
+    @MockBean
+    private DegreeService degreeService;
 
     @Test
     void createCourseByDegree() throws Exception {
@@ -48,19 +51,16 @@ public class CourseControllerTest {
                 status().isOk()
         );
 
-        //Existing Course
+       //Existing Course
         Course existingCourse = new Course("Multimedia");
-        Degree degree1 = new Degree("Eng Informatica");
-        degree1.setId(11L);
-
         String existingCourseJson = this.objectMapper.writeValueAsString(existingCourse);
 
 
-        when(this.courseService.createCourseByDegree(existingCourse, degree1.getId())).thenReturn(Optional.empty());
+        when(this.courseService.createCourseByDegree(existingCourse, 1L)).thenReturn(Optional.empty());
 
 
         this.mockMvc.perform(
-                post("/course/11").contentType(MediaType.APPLICATION_JSON).content(existingCourseJson)
+                post("/course/1").contentType(MediaType.APPLICATION_JSON).content(existingCourseJson)
         ).andExpect(
                 status().isBadRequest()
         );
