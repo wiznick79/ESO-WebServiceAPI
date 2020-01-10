@@ -1,6 +1,8 @@
 package edu.ufp.nk.ws1.controllers;
 
+import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.models.Degree;
+import edu.ufp.nk.ws1.services.CollegeService;
 import edu.ufp.nk.ws1.services.DegreeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +21,13 @@ public class DegreeController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private DegreeService degreeService;
+	private CollegeService collegeService;
 
 	// Constructor
 	@Autowired
-	public DegreeController(DegreeService degreeService) {
-
+	public DegreeController(DegreeService degreeService, CollegeService collegeService) {
 		this.degreeService = degreeService;
+		this.collegeService = collegeService;
 	}
 
 
@@ -47,14 +50,16 @@ public class DegreeController {
 	}
 
 	@PostMapping(value = "/{college}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	// TODO: Use code 201: Created
-	// TODO: Change return code when already exists.
 	public ResponseEntity<Degree> createDegreeByCollege(@RequestBody Degree degree, @PathVariable Long college) {
 		Optional<Degree> degreeOptional = this.degreeService.createDegreeByCollege(degree, college);
 		if(degreeOptional.isPresent()) {
 			return ResponseEntity.ok(degreeOptional.get());
 		}
-		throw new DegreeAlreadyExistsException(degree.getName());
+		Optional<College> collegeOptional = collegeService.findById(college);
+		if (collegeOptional.isPresent()) {
+			throw new DegreeAlreadyExistsException(degree.getName());
+		}
+		else throw new NoCollegeException(college);
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such degree")
@@ -66,9 +71,15 @@ public class DegreeController {
 
 	@ResponseStatus(value= HttpStatus.BAD_REQUEST, reason = "Degree already exists")
 	private static class DegreeAlreadyExistsException extends RuntimeException {
-
 		public DegreeAlreadyExistsException(String name) {
 			super("A degree with name: "+name+" already exists");
+		}
+	}
+
+	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such college")
+	private static class NoCollegeException extends RuntimeException {
+		public NoCollegeException(Long id) {
+			super("No such college with id: " + id);
 		}
 	}
 }
