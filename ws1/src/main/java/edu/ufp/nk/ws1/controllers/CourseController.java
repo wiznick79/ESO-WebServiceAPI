@@ -48,15 +48,6 @@ public class CourseController {
 		throw new NoCourseException(id);
 	}
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Course> createCourse(@RequestBody Course course){
-		Optional<Course> courseOptional = this.courseService.createCourse(course);
-		if(courseOptional.isPresent()) {
-			return ResponseEntity.ok(courseOptional.get());
-		}
-		throw new CourseAlreadyExistsException(course.getName());
-	}
-
 	@PostMapping(value="/{degree}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Course> createCourseByDegree(@RequestBody Course course, @PathVariable Long degree){
 		Optional<Course> courseOptional = this.courseService.createCourseByDegree(course, degree);

@@ -42,6 +42,21 @@ public class ExplainerControllerTest {
         ).andExpect(
                 status().isOk()
         );
+
+        Explainer existingExpainer = new Explainer("Nikos Perris");
+
+        when(this.explainerService.createExplainer(existingExpainer)).thenReturn(Optional.empty());
+
+        String existingStudentJson = this.objectMapper.writeValueAsString(existingExpainer);
+
+        this.mockMvc.perform(
+                post("/explainer").contentType(MediaType.APPLICATION_JSON).content(existingStudentJson)
+        ).andExpect(
+                status().isBadRequest()
+        );
+
+
+
     }
 
     @Test
@@ -92,5 +107,6 @@ public class ExplainerControllerTest {
         ).andExpect(
                 status().isNotFound()
         );
+
     }
 }
