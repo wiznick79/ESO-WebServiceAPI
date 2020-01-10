@@ -10,6 +10,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,6 +30,7 @@ public class StudentControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     @Test
     void createStudent() throws Exception{
         Student student = new Student("Alvaro Magalhães", 37000);
@@ -39,14 +44,26 @@ public class StudentControllerTest {
         ).andExpect(
                 status().isOk()
         );
+
+        Student existingStudent = new Student("Nikos", 37000);
+
+        when(this.studentService.createStudent(existingStudent)).thenReturn(Optional.empty());
+
+        String existingStudentJson = this.objectMapper.writeValueAsString(existingStudent);
+
+        this.mockMvc.perform(
+                post("/student").contentType(MediaType.APPLICATION_JSON).content(existingStudentJson)
+        ).andExpect(
+                status().isBadRequest()
+        );
     }
 
     @Test
     public void getAllStudents(){
 
     }
-/*
-    @Test
+
+   @Test
     void getStudentById() throws Exception{
         Student student = new Student("asda", 123);
         student.setId(1L);
@@ -54,19 +71,47 @@ public class StudentControllerTest {
         when(this.studentService.findById(1l)).thenReturn(Optional.of(student));
 
         String responseJson=this.mockMvc.perform(
-                get("/client/id=1")
+                get("/student/id=1")
         ).andExpect(
                 status().isOk()
         ).andReturn().getResponse().getContentAsString();
-    }
+
 
     Student responseStudent = this.objectMapper.readValue(responseJson, Student.class);
     assertEquals(student, responseStudent);
 
-    this.mockMvc.perform(
-    get("/client/id=2")
+       this.mockMvc.perform(
+               get("/student/id=2")
+       ).andExpect(
+               status().isNotFound()
+       );
+
+   }
+
+    @Test
+    void getStudentByNumber() throws Exception{
+        Student student = new Student("asda", 123);
+        student.setStudentNumber(123);
+
+        when(this.studentService.findByNumber(123)).thenReturn(Optional.of(student));
+
+        String responseJson=this.mockMvc.perform(
+                get("/student/number=123")
         ).andExpect(
-            status().isNotFound()
+                status().isOk()
+        ).andReturn().getResponse().getContentAsString();
+
+
+        Student responseStudent = this.objectMapper.readValue(responseJson, Student.class);
+        assertEquals(student, responseStudent);
+
+        this.mockMvc.perform(
+                get("/student/number=2")
+        ).andExpect(
+                status().isNotFound()
         );
-*/
+
+    }
+
+
 }
