@@ -31,16 +31,23 @@ public class DegreeService {
     }
 
     public Optional<Degree> findById(Long id) {
+
         return this.degreeRepo.findById(id);
     }
 
     public Optional<Degree> createDegreeByCollege(Degree degree, Long college) {
         Optional<Degree> optionalDegree = this.degreeRepo.findByName(degree.getName());
         Optional<College> optionalCollege = this.collegeRepo.findById(college);
+
         if (optionalDegree.isPresent()) {
             return Optional.empty();
         }
-        optionalCollege.ifPresent(degree::setCollege);
+
+        if (optionalCollege.isPresent()) {
+            degree.setCollege(optionalCollege.get());
+        }
+        else return Optional.empty();
+
         Degree createDegree = this.degreeRepo.save(degree);
         return Optional.of(createDegree);
     }
