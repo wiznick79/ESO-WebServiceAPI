@@ -29,10 +29,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
 	// Testing data
 	public void loadData(){
-		Degree engInfo = new Degree("Engenharia Informática");
-		Degree engCivil = new Degree("Engenharia Civil");
-		Degree psicologia = new Degree("Psicologia");
 		Degree enfermagem = new Degree("Enfermagem");
+		Degree engCivil = new Degree("Engenharia Civil");
+		Degree engInfo = new Degree("Engenharia Informática");
+		Degree psicologia = new Degree("Psicologia");
 
 		Course c1 = new Course("Laboratorio de Programação");
 		Course c2 = new Course("Redes de Computadores I");
@@ -44,10 +44,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 		c3.setDegree(psicologia);
 		c4.setDegree(enfermagem);
 
-		this.getDegreeRepo().save(engInfo);
-		this.getDegreeRepo().save(engCivil);
-		this.getDegreeRepo().save(psicologia);
 		this.getDegreeRepo().save(enfermagem);
+		this.getDegreeRepo().save(engCivil);
+		this.getDegreeRepo().save(engInfo);
+		this.getDegreeRepo().save(psicologia);
 
 		this.getCourseRepo().save(c1);
 		this.getCourseRepo().save(c2);
