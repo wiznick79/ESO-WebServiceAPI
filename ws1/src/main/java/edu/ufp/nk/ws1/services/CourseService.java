@@ -51,9 +51,12 @@ public class CourseService {
     public Optional<Course> createCourseByDegree(Course course, Long degree){
         Optional<Course> optionalCourse = this.courseRepo.findByName(course.getName());
         Optional<Degree> optionalDegree = this.degreeRepo.findById(degree);
+
         if (optionalCourse.isPresent()){
             return Optional.empty();
         }
+
+
         optionalDegree.ifPresent(course::setDegree);
         Course createCourse = this.courseRepo.save(course);
 

@@ -1,5 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
+import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.ExplainerService;
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import java.util.Optional;
 public class ExplainerController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private ExplainerService explainerService;
 
     //Constructor
@@ -60,6 +60,27 @@ public class ExplainerController {
         }
         throw new ExplainerAlreadyExistsExcpetion(explainer.getName());
     }
+
+
+    @PutMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Explainer> addAvailabilitie(@PathVariable("id") Long id, @RequestBody Availability availability){
+
+        Optional<Explainer> explainerOptional = this.explainerService.addAvailabilitie(id, availability);
+        if (explainerOptional.isPresent()){
+            return ResponseEntity.ok(explainerOptional.get());
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+
+
+
+
+
+    /*
+     * EXCEPTIONS
+     */
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such explainer")
     private static class NoExplainerException extends RuntimeException {

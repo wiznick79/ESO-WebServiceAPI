@@ -32,7 +32,7 @@ public class LanguageController {
         return ResponseEntity.ok(this.languageService.findAll());
     }
 
-    @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/id", method = RequestMethod.GET)
     public ResponseEntity<Language> getLanguageById(@PathVariable("id") long id) throws LanguageController.NoLanguageException {
         this.logger.info("Received a get request");
 
@@ -45,10 +45,18 @@ public class LanguageController {
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    // TODO: Use code 201: Created
-    // TODO: Change return code when already exists.
     public ResponseEntity<Language> createLanguage(@RequestBody Language language){
         Optional<Language> languageOptional = this.languageService.createLanguage(language);
+        if(languageOptional.isPresent()) {
+            return ResponseEntity.ok(languageOptional.get());
+        }
+        throw new LanguageController.LanguageAlreadyExistsException(language.getName());
+    }
+
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Language> editLanguage(@PathVariable("id") long id, @RequestBody Language language){
+        Optional<Language> languageOptional = this.languageService.updateLanguage(id, language);
+
         if(languageOptional.isPresent()) {
             return ResponseEntity.ok(languageOptional.get());
         }
@@ -64,9 +72,9 @@ public class LanguageController {
 
     @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Language already exists")
     private static class LanguageAlreadyExistsException extends RuntimeException {
-
         public LanguageAlreadyExistsException(String name) {
             super("A language with name: "+name+" already exists");
         }
     }
+
 }

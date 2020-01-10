@@ -25,7 +25,6 @@ public class AvailabilityController {
     //Constructor
     @Autowired
     public AvailabilityController(AvailabilityService availabilityService) {
-        
         this.availabilityService = availabilityService;
     }
 
