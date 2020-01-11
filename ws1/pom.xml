@@ -8,11 +8,11 @@
         <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>edu.ufp.afmiguez.tk.esof</groupId>
-    <artifactId>airport</artifactId>
+    <groupId>edu.ufp.nk.ws1</groupId>
+    <artifactId>WS1</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ws1</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Project for ESOF</description>
 
     <properties>
         <java.version>11</java.version>
@@ -54,12 +54,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <version>2.1.9.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
