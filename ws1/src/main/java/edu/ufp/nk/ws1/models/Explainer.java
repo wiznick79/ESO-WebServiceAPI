@@ -17,14 +17,22 @@ public class Explainer extends BaseModel {
     //Variables
     private String name;
 
-    @OneToMany(mappedBy = "explainer",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "explainer", cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private Set<Availability> availabilities = new HashSet<>();
 
     //Constructor
-    public Explainer (String name){this.name=name;}
+    public Explainer (String name) { this.name = name; }
 
     //Gets & Sets
-    public void setName(String name){this.name=name;}
-    public String getName(){return name;}
+    public void setName(String name) { this.name = name; }
+    public String getName() { return name; }
+
+    public Set<Availability> getAvailabilities() {
+        return availabilities;
+    }
+
+    public void setAvailabilities(Set<Availability> availabilities) {
+        this.availabilities = availabilities;
+    }
 }

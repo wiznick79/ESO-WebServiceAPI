@@ -42,7 +42,7 @@ public class ExplainerController {
         throw new NoExplainerException();
     }
 
-    @RequestMapping(value = "/name={name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public ResponseEntity<Explainer> getExplainerByName(@PathVariable("name") String name) throws NoExplainerException{
         this.logger.info("Received a get request");
         Optional<Explainer> optionalExplainer = this.explainerService.findByName(name);
@@ -61,19 +61,15 @@ public class ExplainerController {
         throw new ExplainerAlreadyExistsExcpetion(explainer.getName());
     }
 
-
-    @PutMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Explainer> addAvailabilitie(@PathVariable("id") Long id, @RequestBody Availability availability){
-
-        Optional<Explainer> explainerOptional = this.explainerService.addAvailabilitie(id, availability);
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Explainer> createAvailability(@RequestBody Availability availability){
+        Optional<Explainer> explainerOptional = this.explainerService.createAvailability(availability);
         if (explainerOptional.isPresent()){
             return ResponseEntity.ok(explainerOptional.get());
         }
 
         return ResponseEntity.badRequest().build();
     }
-
-
 
 
 

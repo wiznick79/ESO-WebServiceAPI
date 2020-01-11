@@ -32,10 +32,6 @@ public class ExplainerService {
         return explainers;
     }
 
-    public Optional<Explainer> findById(Long id) {
-        return this.explainerRepo.findById(id);
-    }
-
     public Optional<Explainer> createExplainer(Explainer explainer){
 
         //TODO: EXPLICADORES PODEM TER MESMO NOME TIRAR CONDIÇAO?
@@ -47,8 +43,8 @@ public class ExplainerService {
         return Optional.of(createdExplainer);
     }
 
-    public Optional<Explainer> addAvailabilitie(Long id, Availability availability){
-        Optional<Explainer> optionalExplainer = this.explainerRepo.findById(id);
+    public Optional<Explainer> createAvailability(Availability availability){
+        Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(availability.getExplainer().getName());
 
         if(optionalExplainer.isEmpty())
             return Optional.empty();
@@ -62,10 +58,11 @@ public class ExplainerService {
         return optionalExplainer;
     }
 
+    public Optional<Explainer> findByName(String name) {
+        return this.explainerRepo.findByName(name);
+    }
 
-
-
-
-
-    public Optional<Explainer> findByName(String name) {return this.explainerRepo.findByName(name);}
+    public Optional<Explainer> findById(Long id) {
+        return this.explainerRepo.findById(id);
+    }
 }
