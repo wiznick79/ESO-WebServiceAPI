@@ -1,14 +1,15 @@
 package edu.ufp.nk.ws1.services;
 
 import edu.ufp.nk.ws1.models.Availability;
+import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.repositories.AvailabilityRepo;
+import edu.ufp.nk.ws1.repositories.DegreeRepo;
 import edu.ufp.nk.ws1.repositories.ExplainerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -17,11 +18,13 @@ import java.util.Set;
 public class ExplainerService {
     private ExplainerRepo explainerRepo;
     private AvailabilityRepo availabilityRepo;
+    private DegreeRepo degreeRepo;
 
     @Autowired
-    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo){
+    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo, DegreeRepo degreeRepo){
         this.explainerRepo=explainerRepo;
         this.availabilityRepo = availabilityRepo;
+        this.degreeRepo = degreeRepo;
     }
 
     public Set<Explainer> findAll(){
@@ -45,11 +48,14 @@ public class ExplainerService {
 
     public Optional<Explainer> createAvailability(Availability availability){
         Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(availability.getExplainer().getName());
-
-        if(optionalExplainer.isEmpty())
+        // TODO: MAKE ALL THE TESTS
+        if (optionalExplainer.isEmpty()
+                || availability.getStart().isAfter(availability.getEnd())
+                || availability.getStart().equals(availability.getEnd())
+                || availability.getDayOfWeek()<1 || availability.getDayOfWeek()>7
+                || Duration.between(availability.getStart(),availability.getEnd()).toHours()<1 )
             return Optional.empty();
 
-        // TODO: MAKE ALL THE TESTS
         availability.setExplainer(optionalExplainer.get());
         optionalExplainer.get().getAvailabilities().add(availability);
         this.availabilityRepo.save(availability);
@@ -57,6 +63,20 @@ public class ExplainerService {
 
         return optionalExplainer;
     }
+
+    public Optional<Explainer> addDegree(Explainer explainer, String degreeName) {
+        Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(explainer.getName());
+        Optional<Degree> optionalDegree = this.degreeRepo.findByName(degreeName);
+
+        if (optionalExplainer.isEmpty() || optionalDegree.isEmpty())
+            return Optional.empty();
+
+        optionalExplainer.get().setDegree(optionalDegree.get());
+        this.explainerRepo.save(optionalExplainer.get());
+
+        return optionalExplainer;
+    }
+
 
     public Optional<Explainer> findByName(String name) {
         return this.explainerRepo.findByName(name);
