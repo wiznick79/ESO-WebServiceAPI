@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Explainer;
+import edu.ufp.nk.ws1.services.DegreeService;
 import edu.ufp.nk.ws1.services.ExplainerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class ExplainerControllerTest {
 
     @MockBean
     private ExplainerService explainerService;
+    @MockBean
+    private DegreeService degreeService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -94,7 +97,7 @@ public class ExplainerControllerTest {
         when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
 
         String responseJson=this.mockMvc.perform(
-                get("/explainer/name=Nikos Perris")
+                get("/explainer/Nikos Perris")
         ).andExpect(
                 status().isOk()
         ).andReturn().getResponse().getContentAsString();
@@ -103,7 +106,7 @@ public class ExplainerControllerTest {
         assertEquals(explainer, responseExplainer);
 
         this.mockMvc.perform(
-                get("/explainer/name=2")
+                get("/explainer/2")
         ).andExpect(
                 status().isNotFound()
         );

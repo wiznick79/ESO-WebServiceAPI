@@ -3,6 +3,7 @@ package edu.ufp.nk.ws1.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.models.Degree;
+import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.CollegeService;
 import edu.ufp.nk.ws1.services.DegreeService;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -78,4 +81,28 @@ public class DegreeControllerTest {
 
     }
 
-}
+    @Test
+    void getDegreeById() throws Exception {
+        Degree degree = new Degree("Informatica");
+        degree.setId(1L);
+
+        when(this.degreeService.findById(1L)).thenReturn(Optional.of(degree));
+
+        String responseJson=this.mockMvc.perform(
+                get("/degree/id=1")
+        ).andExpect(
+                status().isOk()
+        ).andReturn().getResponse().getContentAsString();
+
+
+        Degree responseDegree = this.objectMapper.readValue(responseJson, Degree.class);
+        assertEquals(degree, responseDegree);
+
+        this.mockMvc.perform(
+                get("/degree/id=2")
+        ).andExpect(
+                status().isNotFound()
+        );
+    }
+
+    }
