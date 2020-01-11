@@ -45,6 +45,8 @@ public class CollegeController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<College> createCollege(@RequestBody College college){
+        this.logger.info("Received a post request");
+
         Optional<College> collegeOptional=this.collegeService.createCollege(college);
         if(collegeOptional.isPresent()){
             return ResponseEntity.ok(collegeOptional.get());
@@ -52,6 +54,10 @@ public class CollegeController {
         throw new CollegeAlreadyExistsExcpetion(college.getName());
 
     }
+
+    /*
+     * EXCEPTIONS
+     */
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such college")
     private static class NoCollegeExcpetion extends RuntimeException {

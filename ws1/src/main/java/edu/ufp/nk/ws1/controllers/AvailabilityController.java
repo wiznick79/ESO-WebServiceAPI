@@ -38,6 +38,7 @@ public class AvailabilityController {
     @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
     public ResponseEntity<Availability> getAvailability(@PathVariable("id") long id) throws NoAvailabilityException {
         this.logger.info("Received a get request");
+
         Optional<Availability> optionalAvailability = this.availabilityService.findById(id);
         if (optionalAvailability.isPresent()) {
             return ResponseEntity.ok(optionalAvailability.get());
@@ -46,16 +47,19 @@ public class AvailabilityController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    // TODO: Use code 201: Created
-    // TODO: Change return code when already exists.
-    // TODO: Verificar como no Availability
     public ResponseEntity<Availability> createAvailability(@RequestBody Availability availability) {
+        this.logger.info("Received a post request");
+
         Optional<Availability> availabilityOptional = this.availabilityService.createAvailability(availability);
         if (availabilityOptional.isPresent()) {
             return ResponseEntity.ok(availabilityOptional.get());
         }
         throw new AvailabilityController.AvailabilityAlreadyExistsException(availability.getStart(),availability.getDayOfWeek());
     }
+
+    /*
+     * EXCEPTIONS
+     */
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such availability")
     private static class NoAvailabilityException extends RuntimeException {

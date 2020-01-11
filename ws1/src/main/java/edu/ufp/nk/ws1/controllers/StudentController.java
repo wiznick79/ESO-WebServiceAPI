@@ -57,9 +57,9 @@ public class StudentController {
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    // TODO: Use code 201: Created
-    // TODO: Change return code when already exists.
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
+        this.logger.info("Received a post request");
+
         Optional<Student> studentOptional = this.studentService.createStudent(student);
         if (studentOptional.isPresent()){
             return ResponseEntity.ok(studentOptional.get());
@@ -67,6 +67,9 @@ public class StudentController {
         throw new StudentAlreadyExistsException(student.getStudentNumber());
     }
 
+    /*
+     * EXCEPTIONS
+     */
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such student")
     private static class NoStudentException extends RuntimeException {
@@ -81,7 +84,4 @@ public class StudentController {
             super("A student with number: "+number+" already exists");
         }
     }
-
-
-
 }

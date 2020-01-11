@@ -50,6 +50,8 @@ public class CourseController {
 
 	@PostMapping(value="/{degree}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Course> createCourseByDegree(@RequestBody Course course, @PathVariable Long degree){
+		this.logger.info("Received a post request");
+
 		Optional<Course> courseOptional = this.courseService.createCourseByDegree(course, degree);
 		if(courseOptional.isPresent()) {
 			return ResponseEntity.ok(courseOptional.get());
@@ -60,6 +62,10 @@ public class CourseController {
 		}
 		else throw new NoDegreeException(degree);
 	}
+
+	/*
+	 * EXCEPTIONS
+	 */
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such course")
 	private static class NoCourseException extends RuntimeException {

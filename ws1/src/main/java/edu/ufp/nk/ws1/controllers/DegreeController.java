@@ -51,6 +51,8 @@ public class DegreeController {
 
 	@PostMapping(value = "/{college}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Degree> createDegreeByCollege(@RequestBody Degree degree, @PathVariable Long college) {
+		this.logger.info("Received a post request");
+
 		Optional<Degree> degreeOptional = this.degreeService.createDegreeByCollege(degree, college);
 		if(degreeOptional.isPresent()) {
 			return ResponseEntity.ok(degreeOptional.get());
@@ -61,6 +63,10 @@ public class DegreeController {
 		}
 		else throw new NoCollegeException(college);
 	}
+
+	/*
+	 * EXCEPTIONS
+	 */
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such degree")
 	private static class NoDegreeException extends RuntimeException {

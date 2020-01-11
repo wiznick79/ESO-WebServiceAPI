@@ -32,12 +32,14 @@ public class ExplainerController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Explainer>> getAllExplainers(){
         this.logger.info("Received a get request");
+
         return ResponseEntity.ok(this.explainerService.findAll());
     }
 
     @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
     public ResponseEntity<Explainer> getExplainerById(@PathVariable("id") long id) {
         this.logger.info("Received a get request");
+
         Optional<Explainer> optionalExplainer = this.explainerService.findById(id);
         if(optionalExplainer.isPresent()){
             return ResponseEntity.ok(optionalExplainer.get());
@@ -48,6 +50,7 @@ public class ExplainerController {
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public ResponseEntity<Explainer> getExplainerByName(@PathVariable("name") String name) {
         this.logger.info("Received a get request");
+
         Optional<Explainer> optionalExplainer = this.explainerService.findByName(name);
         if(optionalExplainer.isPresent()){
             return ResponseEntity.ok(optionalExplainer.get());
@@ -57,6 +60,8 @@ public class ExplainerController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Explainer> createExplainer(@RequestBody Explainer explainer){
+        this.logger.info("Received a post request");
+
         Optional<Explainer> explainerOptional = this.explainerService.createExplainer(explainer);
         if (explainerOptional.isPresent()){
             return ResponseEntity.ok(explainerOptional.get());
@@ -66,6 +71,8 @@ public class ExplainerController {
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Explainer> createAvailability(@RequestBody Availability availability){
+        this.logger.info("Received a put request");
+
         if (this.explainerService.findByName(availability.getExplainer().getName()).isEmpty())
             throw new NoExplainerException();
 
@@ -78,6 +85,8 @@ public class ExplainerController {
 
     @PutMapping(value ="/{degree}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Explainer> addDegree(@PathVariable("degree") String degreeName, @RequestBody Explainer explainer){
+        this.logger.info("Received a put request");
+
         if (this.explainerService.findByName(explainer.getName()).isEmpty())
             throw new NoExplainerException();
         if (this.degreeService.findByName(degreeName).isEmpty())
@@ -124,5 +133,4 @@ public class ExplainerController {
             super("No such degree");
         }
     }
-
 }

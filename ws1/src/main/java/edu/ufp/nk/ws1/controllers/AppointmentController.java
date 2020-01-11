@@ -60,6 +60,7 @@ public class AppointmentController {
     // TODO: Verificar o findByStartAndDate
     public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment){
         this.logger.info("Received a post request");
+
         Optional<Student> optionalStudent = this.studentService.findByName(appointment.getStudent().getName());
         if (optionalStudent.isEmpty())
             throw new NoSuchStudentException(appointment.getStudent().getName());
@@ -75,6 +76,9 @@ public class AppointmentController {
         throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(),appointment.getDate());
     }
 
+    /*
+     * EXCEPTIONS
+     */
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such appointment")
     private static class NoAppointmentException extends RuntimeException {
@@ -85,7 +89,6 @@ public class AppointmentController {
 
     @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Appointment already exists")
     private static class AppointmentAlreadyExistsException extends RuntimeException {
-
         public AppointmentAlreadyExistsException(LocalTime time, LocalDate date) {
             super("An appointment on date: "+date+" "+time+" already exists");
         }
@@ -104,5 +107,4 @@ public class AppointmentController {
             super("No such explainer with name: " + name);
         }
     }
-
 }
