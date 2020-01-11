@@ -75,12 +75,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 		this.getCollegeRepo().save(cl1);
 		this.getCollegeRepo().save(cl2);
 
-
-		System.out.println();
-		System.out.println(this.getDegreeRepo().findAll());
-		System.out.println();
 	}
-
 
 
 	// Gets & Sets

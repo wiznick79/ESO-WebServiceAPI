@@ -46,6 +46,8 @@ public class LanguageController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Language> createLanguage(@RequestBody Language language){
+        this.logger.info("Received a post request");
+
         Optional<Language> languageOptional = this.languageService.createLanguage(language);
         if(languageOptional.isPresent()) {
             return ResponseEntity.ok(languageOptional.get());
@@ -55,6 +57,8 @@ public class LanguageController {
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Language> editLanguage(@PathVariable("id") long id, @RequestBody Language language){
+        this.logger.info("Received a put request");
+
         Optional<Language> languageOptional = this.languageService.updateLanguage(id, language);
 
         if(languageOptional.isPresent()) {
@@ -62,6 +66,10 @@ public class LanguageController {
         }
         throw new LanguageAlreadyExistsException(language.getName());
     }
+
+    /*
+     * EXCEPTIONS
+     */
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such language")
     private static class NoLanguageException extends RuntimeException {
@@ -76,5 +84,4 @@ public class LanguageController {
             super("A language with name: "+name+" already exists");
         }
     }
-
 }

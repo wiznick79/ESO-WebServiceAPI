@@ -37,4 +37,12 @@ public class Degree extends BaseModel {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public College getCollege() {
+		return college;
+	}
+
+	public void setCollege(College college) {
+		this.college = college;
+	}
 }
