@@ -14,7 +14,6 @@ public class StudentService {
 
     private StudentRepo studentRepo;
 
-
     @Autowired
     public StudentService(StudentRepo studentRepo){
         this.studentRepo = studentRepo;
@@ -32,9 +31,13 @@ public class StudentService {
         return this.studentRepo.findById(id);
     }
 
-    public Optional<Student> findByName(String name) {return this.studentRepo.findByName(name);}
+    public Optional<Student> findByName(String name) {
+        return this.studentRepo.findByName(name);
+    }
 
-    public Optional<Student> findByNumber(int number) {return this.studentRepo.findByStudentNumber(number);}
+    public Optional<Student> findByNumber(int number) {
+        return this.studentRepo.findByStudentNumber(number);
+    }
 
     public Optional<Student> createStudent(Student student){
         Optional<Student> optionalStudent = this.studentRepo.findByStudentNumber(student.getStudentNumber());

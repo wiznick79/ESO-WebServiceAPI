@@ -2,6 +2,8 @@ package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.services.AppointmentService;
+import edu.ufp.nk.ws1.services.ExplainerService;
+import edu.ufp.nk.ws1.services.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,15 @@ public class AppointmentController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private AppointmentService appointmentService;
+    private ExplainerService explainerService;
+    private StudentService studentService;
 
     //Constructor
     @Autowired
-    public AppointmentController(AppointmentService appointmentService) {
-
+    public AppointmentController(AppointmentService appointmentService, ExplainerService explainerService, StudentService studentService) {
         this.appointmentService = appointmentService;
+        this.explainerService = explainerService;
+        this.studentService = studentService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -54,16 +59,13 @@ public class AppointmentController {
     // TODO: Verificar o findByStartAndDate
     public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment){
         Optional<Appointment> appointmentOptional = this.appointmentService.createAppointment(appointment);
+
         if (appointmentOptional.isPresent()) {
             return ResponseEntity.ok(appointmentOptional.get());
         }
+
         throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(),appointment.getDate());
     }
-
-
-
-
-
 
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such appointment")
