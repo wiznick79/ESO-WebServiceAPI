@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +17,9 @@ import java.util.Set;
 public class Explainer extends BaseModel {
     //Variables
     private String name;
+
+    @OneToOne
+    private Degree degree;
 
     @OneToMany(mappedBy = "explainer", cascade = CascadeType.PERSIST)
     @JsonManagedReference
@@ -34,5 +38,13 @@ public class Explainer extends BaseModel {
 
     public void setAvailabilities(Set<Availability> availabilities) {
         this.availabilities = availabilities;
+    }
+
+    public Degree getDegree() {
+        return degree;
+    }
+
+    public void setDegree(Degree degree) {
+        this.degree = degree;
     }
 }
