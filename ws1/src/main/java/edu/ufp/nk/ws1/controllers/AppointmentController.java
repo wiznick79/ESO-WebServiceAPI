@@ -1,6 +1,8 @@
 package edu.ufp.nk.ws1.controllers;
 
 import edu.ufp.nk.ws1.models.Appointment;
+import edu.ufp.nk.ws1.models.Explainer;
+import edu.ufp.nk.ws1.models.Student;
 import edu.ufp.nk.ws1.services.AppointmentService;
 import edu.ufp.nk.ws1.services.ExplainerService;
 import edu.ufp.nk.ws1.services.StudentService;
@@ -55,11 +57,17 @@ public class AppointmentController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     // TODO: Use code 201: Created
-    // TODO: Change return code when already exists.
     // TODO: Verificar o findByStartAndDate
     public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment){
-        Optional<Appointment> appointmentOptional = this.appointmentService.createAppointment(appointment);
+        this.logger.info("Received a post request");
+        Optional<Student> optionalStudent = this.studentService.findByName(appointment.getStudent().getName());
+        if (optionalStudent.isEmpty())
+            throw new NoSuchStudentException(appointment.getStudent().getName());
+        Optional<Explainer> optionalExplainer = this.explainerService.findByName(appointment.getExplainer().getName());
+        if (optionalExplainer.isEmpty())
+            throw new NoSuchExplainerException(appointment.getExplainer().getName());
 
+        Optional<Appointment> appointmentOptional = this.appointmentService.createAppointment(appointment);
         if (appointmentOptional.isPresent()) {
             return ResponseEntity.ok(appointmentOptional.get());
         }
@@ -80,6 +88,20 @@ public class AppointmentController {
 
         public AppointmentAlreadyExistsException(LocalTime time, LocalDate date) {
             super("An appointment on date: "+date+" "+time+" already exists");
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such student")
+    private static class NoSuchStudentException extends RuntimeException {
+        public NoSuchStudentException(String name) {
+            super("No such student with name: " + name);
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such explainer")
+    private static class NoSuchExplainerException extends RuntimeException {
+        public NoSuchExplainerException(String name) {
+            super("No such explainer with name: " + name);
         }
     }
 
