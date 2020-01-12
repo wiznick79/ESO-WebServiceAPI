@@ -23,6 +23,9 @@ public class Explainer extends BaseModel {
     @OneToMany(mappedBy = "explainer", cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private Set<Availability> availabilities = new HashSet<>();
+
+    @OneToMany
+    private Set<Language> languages = new HashSet<>();
 /*
     @OneToMany(mappedBy = "explainer", cascade = CascadeType.PERSIST)
     @JsonManagedReference
