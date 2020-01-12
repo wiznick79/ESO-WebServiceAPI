@@ -55,7 +55,7 @@ public class AvailabilityController {
         if (availabilityOptional.isPresent()) {
             return ResponseEntity.ok(availabilityOptional.get());
         }
-        throw new AvailabilityController.AvailabilityAlreadyExistsException(availability.getStart(), availability.getDayOfWeek());
+        throw new AvailabilityController.AvailabilityAlreadyExistsException(availability.getStart(), availability.getDay());
     }
 
     /*
