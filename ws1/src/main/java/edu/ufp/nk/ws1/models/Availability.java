@@ -33,21 +33,4 @@ public class Availability extends BaseModel {
         this.end = end;
         this.day = day;
     }
-
-
-    //Gets & Sets
-    public void setStart(LocalTime start) { this.start = start; }
-    public LocalTime getStart() { return start; }
-    public void setEnd(LocalTime end) { this.end = end; }
-    public LocalTime getEnd(){ return end; }
-    public void setDayOfWeek(LocalDate day) { this.day = day; }
-    public LocalDate getDayOfWeek(){ return day; }
-
-    public Explainer getExplainer() {
-        return explainer;
-    }
-
-    public void setExplainer(Explainer explainer) {
-        this.explainer = explainer;
-    }
 }

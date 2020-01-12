@@ -32,32 +32,5 @@ public class Explainer extends BaseModel {
     //Constructor
     public Explainer (String name) { this.name = name; }
 
-    //Gets & Sets
-    public void setName(String name) { this.name = name; }
-    public String getName() { return name; }
 
-    public Degree getDegree() {
-        return degree;
-    }
-
-    public void setDegree(Degree degree) {
-        this.degree = degree;
-    }
-
-    public Set<Availability> getAvailabilities() {
-        return availabilities;
-    }
-
-    public void setAvailabilities(Set<Availability> availabilities) {
-        this.availabilities = availabilities;
-    }
-/*
-    public Set<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(Set<Appointment> appointments) {
-        this.appointments = appointments;
-    }
-*/
 }

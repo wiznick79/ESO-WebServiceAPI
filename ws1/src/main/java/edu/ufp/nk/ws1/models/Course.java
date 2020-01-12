@@ -22,23 +22,4 @@ public class Course extends BaseModel {
 		this.name = name;
 	}
 
-
-	// Gets & Sets
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-
-	public Degree getDegree(){
-		return degree;
-	}
-	public void setDegree(Degree degree) {
-		this.degree = degree;
-	}
-
-
 }
