@@ -1,10 +1,9 @@
-package edu.ufp.nk.ws1.services.filters.Explainer;
+package edu.ufp.nk.ws1.services.filters.explainer;
 
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.filters.AndFilter;
 import edu.ufp.nk.ws1.services.filters.FilterI;
 import org.springframework.stereotype.Service;
-
 import java.util.Set;
 
 @Service

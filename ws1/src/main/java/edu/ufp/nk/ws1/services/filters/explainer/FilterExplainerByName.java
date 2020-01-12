@@ -1,8 +1,7 @@
-package edu.ufp.nk.ws1.services.filters.Explainer;
+package edu.ufp.nk.ws1.services.filters.explainer;
 
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.filters.FilterI;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +22,7 @@ public class FilterExplainerByName implements FilterI<Explainer> {
 
 		Set<Explainer> explainers = new HashSet<>();
 		for(Explainer e : data)
-			if(e.getName().compareTo(this.explainerName) == 0)
+			if (e.getName().equalsIgnoreCase(this.explainerName))
 				explainers.add(e);
 
 		return explainers;
