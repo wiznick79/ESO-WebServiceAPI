@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
@@ -17,7 +18,7 @@ public class Availability extends BaseModel {
     //Variables
     private LocalTime start;
     private LocalTime end;
-    private int dayOfWeek;
+    private LocalDate day;
 
     @ManyToOne
     @ToString.Exclude
@@ -26,11 +27,11 @@ public class Availability extends BaseModel {
     private Explainer explainer;
 
     //Constructor
-    public Availability(Explainer explainer, LocalTime start, LocalTime end, int dayOfWeek){
+    public Availability(Explainer explainer, LocalTime start, LocalTime end, LocalDate day){
         this.explainer = explainer;
         this.start = start;
         this.end = end;
-        this.dayOfWeek = dayOfWeek;
+        this.day = day;
     }
 
 
@@ -39,8 +40,8 @@ public class Availability extends BaseModel {
     public LocalTime getStart() { return start; }
     public void setEnd(LocalTime end) { this.end = end; }
     public LocalTime getEnd(){ return end; }
-    public void setDayOfWeek(int dayOfWeek) { this.dayOfWeek = dayOfWeek; }
-    public int getDayOfWeek(){ return dayOfWeek; }
+    public void setDayOfWeek(LocalDate day) { this.day = day; }
+    public LocalDate getDayOfWeek(){ return day; }
 
     public Explainer getExplainer() {
         return explainer;

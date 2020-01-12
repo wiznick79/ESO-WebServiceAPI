@@ -57,7 +57,6 @@ public class ExplainerService {
         if (optionalExplainer.isEmpty()
                 || availability.getStart().isAfter(availability.getEnd())
                 || availability.getStart().equals(availability.getEnd())
-                || availability.getDayOfWeek()<1 || availability.getDayOfWeek()>7
                 || Duration.between(availability.getStart(),availability.getEnd()).toHours()<1 )
             return Optional.empty();
 

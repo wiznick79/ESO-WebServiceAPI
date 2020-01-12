@@ -26,11 +26,10 @@ public class FilterExplainerByDay implements FilterI<Explainer> {
 			return data;
 
 		Set<Explainer> explainers = new HashSet<>();
-		DayOfWeek dayOfWeek = this.day.getDayOfWeek();
 
 		for(Explainer e : data){
 			for(Availability a : e.getAvailabilities()){
-				if(a.getDayOfWeek() == dayOfWeek.getValue())
+				if(a.getDay().equals(day))
 					explainers.add(e);
 			}
 		}
