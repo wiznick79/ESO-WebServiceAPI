@@ -3,6 +3,7 @@ package edu.ufp.nk.ws1.services.filters.Explainer;
 import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.filters.FilterI;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 public class FilterExplainerByStart implements FilterI<Explainer> {
 
+	@DateTimeFormat(pattern = "HH:mm")
 	private LocalTime start;
 
 	public FilterExplainerByStart(LocalTime start) {
@@ -27,7 +29,7 @@ public class FilterExplainerByStart implements FilterI<Explainer> {
 
 		for(Explainer e : data){
 			for(Availability a : e.getAvailabilities()){
-				if(a.getStart().isBefore(this.start) || (a.getStart().equals(start)))
+				if(this.start.isAfter(a.getStart()) || this.start.equals(a.getStart()))
 					explainers.add(e);
 			}
 		}
