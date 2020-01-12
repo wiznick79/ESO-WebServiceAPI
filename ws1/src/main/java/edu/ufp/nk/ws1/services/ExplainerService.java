@@ -6,11 +6,14 @@ import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.repositories.AvailabilityRepo;
 import edu.ufp.nk.ws1.repositories.DegreeRepo;
 import edu.ufp.nk.ws1.repositories.ExplainerRepo;
+import edu.ufp.nk.ws1.services.filters.Explainer.FilterExplainerObject;
+import edu.ufp.nk.ws1.services.filters.Explainer.FilterExplainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,12 +22,14 @@ public class ExplainerService {
     private ExplainerRepo explainerRepo;
     private AvailabilityRepo availabilityRepo;
     private DegreeRepo degreeRepo;
+    private FilterExplainerService filterExplainerService;
 
     @Autowired
-    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo, DegreeRepo degreeRepo){
+    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo, DegreeRepo degreeRepo, FilterExplainerService filterExplainerService) {
         this.explainerRepo=explainerRepo;
         this.availabilityRepo = availabilityRepo;
         this.degreeRepo = degreeRepo;
+        this.filterExplainerService = filterExplainerService;
     }
 
     public Set<Explainer> findAll(){
@@ -52,7 +57,6 @@ public class ExplainerService {
         if (optionalExplainer.isEmpty()
                 || availability.getStart().isAfter(availability.getEnd())
                 || availability.getStart().equals(availability.getEnd())
-                || availability.getDayOfWeek()<1 || availability.getDayOfWeek()>7
                 || Duration.between(availability.getStart(),availability.getEnd()).toHours()<1 )
             return Optional.empty();
 
@@ -75,6 +79,13 @@ public class ExplainerService {
         this.explainerRepo.save(optionalExplainer.get());
 
         return optionalExplainer;
+    }
+
+    public Set<Explainer> filterExplainers(Map<String, String> query){
+        FilterExplainerObject filterExplainerObject = new FilterExplainerObject(query);
+        Set<Explainer> explainers = this.findAll();
+
+        return this.filterExplainerService.filter(explainers, filterExplainerObject);
     }
 
 
