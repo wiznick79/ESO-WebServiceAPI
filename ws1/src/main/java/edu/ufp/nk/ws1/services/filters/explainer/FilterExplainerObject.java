@@ -15,6 +15,7 @@ public class FilterExplainerObject {
 
 	private String degree;
 	private String explainerName;
+	private String language;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate day;
@@ -46,5 +47,6 @@ public class FilterExplainerObject {
 
 		this.explainerName = data.get("name");
 		this.degree = data.get("degree");
+		this.language = data.get("language");
 	}
 }

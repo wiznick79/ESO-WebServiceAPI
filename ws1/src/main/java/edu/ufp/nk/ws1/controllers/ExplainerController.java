@@ -102,6 +102,21 @@ public class ExplainerController {
         throw new NoExplainerException();
     }
 
+    @PostMapping(value ="/{language}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Explainer> addLanguage(@PathVariable("language") String language, @RequestBody Explainer explainer) {
+        this.logger.info("Received a post request");
+
+        if (this.explainerService.findByName(explainer.getName()).isEmpty())
+            throw new NoExplainerException();
+
+        Optional<Explainer> explainerOptional = this.explainerService.addLanguage(explainer, language);
+
+        if (explainerOptional.isPresent()){
+            return ResponseEntity.ok(explainerOptional.get());
+        }
+
+        throw new NoExplainerException();
+    }
 
 
 
