@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: edu.ufp.nk.ws1.controllers.CourseControllerTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.503 s - in edu.ufp.nk.ws1.controllers.CourseControllerTest
