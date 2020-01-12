@@ -34,33 +34,4 @@ public class Appointment extends BaseModel {
         this.student = student;
         this.explainer = explainer;
     }
-
-
-    // Gets & Sets
-    public void setDate (LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalDate getDate(){
-        return date;
-    }
-
-    public void setStart(LocalTime start) {this.start = start;}
-    public LocalTime getStart(){return start;}
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Explainer getExplainer() {
-        return explainer;
-    }
-
-    public void setExplainer(Explainer explainer) {
-        this.explainer = explainer;
-    }
 }

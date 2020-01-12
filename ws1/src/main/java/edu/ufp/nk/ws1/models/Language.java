@@ -17,8 +17,4 @@ public class Language extends BaseModel {
         this.name=name;
     }
 
-    //Gets & Sets
-    public void setName(String name){this.name=name;}
-    public String getName(){return this.name;}
-
 }

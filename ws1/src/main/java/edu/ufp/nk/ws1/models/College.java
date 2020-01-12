@@ -25,20 +25,4 @@ public class College extends BaseModel {
     public College(String name){
         this.name = name;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Degree> getDegrees() {
-        return degrees;
-    }
-
-    public void setDegrees(Set<Degree> degrees) {
-        this.degrees = degrees;
-    }
 }
