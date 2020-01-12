@@ -6,8 +6,8 @@ import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.repositories.AvailabilityRepo;
 import edu.ufp.nk.ws1.repositories.DegreeRepo;
 import edu.ufp.nk.ws1.repositories.ExplainerRepo;
-import edu.ufp.nk.ws1.services.filters.Explainer.FilterExplainerObject;
-import edu.ufp.nk.ws1.services.filters.Explainer.FilterExplainerService;
+import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerObject;
+import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

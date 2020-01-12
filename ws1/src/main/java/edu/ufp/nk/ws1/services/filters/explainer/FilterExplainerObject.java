@@ -1,18 +1,22 @@
-package edu.ufp.nk.ws1.services.filters.Explainer;
+package edu.ufp.nk.ws1.services.filters.explainer;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Map;
 
 @Data
 public class FilterExplainerObject {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	private String degree;
 	private String explainerName;
 
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate day;
 	@DateTimeFormat(pattern = "HH:mm")
 	private LocalTime start;
@@ -20,8 +24,6 @@ public class FilterExplainerObject {
 	private LocalTime end;
 
 	public FilterExplainerObject(Map<String, String> data){
-		LocalDate day = null;
-		LocalTime end = null, start = null;
 
 		String dayString = data.get("day");
 		String endString = data.get("start");
@@ -39,14 +41,10 @@ public class FilterExplainerObject {
 				end = LocalTime.parse(endString);
 
 		}catch (Exception e) {
-			// TODO: LOG MAYBE NIKOS?
-			System.out.println("\n\n ERROR DAY / END / START \n" + e.getMessage());
+			this.logger.error(e.getMessage());
 		}
 
 		this.explainerName = data.get("name");
 		this.degree = data.get("degree");
-		this.start = start;
-		this.end = end;
-		this.day = day;
 	}
 }
