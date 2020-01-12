@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -30,10 +32,9 @@ public class ExplainerController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Explainer>> getAllExplainers(){
-        this.logger.info("Received a get request");
-
-        return ResponseEntity.ok(this.explainerService.findAll());
+    public ResponseEntity<Iterable<Explainer>> searchExplainers(@RequestParam Map<String, String> query){
+        System.out.println(query);
+        return ResponseEntity.ok(this.explainerService.filterExplainers(query));
     }
 
     @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
@@ -100,6 +101,8 @@ public class ExplainerController {
 
         throw new NoExplainerException();
     }
+
+
 
 
     /*
