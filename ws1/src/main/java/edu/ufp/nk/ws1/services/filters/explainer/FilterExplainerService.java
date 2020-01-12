@@ -10,16 +10,16 @@ import java.util.Set;
 public class FilterExplainerService {
 	public Set<Explainer> filter(Set<Explainer> explainers , FilterExplainerObject filterExplainerObject){
 
-		FilterI<Explainer> FilterByName = new FilterExplainerByName(filterExplainerObject.getExplainerName());
-		FilterI<Explainer> FilterByDegree = new FilterExplainerByDegree(filterExplainerObject.getDegree());
-		FilterI<Explainer> FilterByDay = new FilterExplainerByDay(filterExplainerObject.getDay());
-		FilterI<Explainer> FilterByStart = new FilterExplainerByStart(filterExplainerObject.getStart());
-		FilterI<Explainer> FilterByEnd = new FilterExplainerByEnd(filterExplainerObject.getEnd());
+		FilterI<Explainer> filterByName = new FilterExplainerByName(filterExplainerObject.getExplainerName());
+		FilterI<Explainer> filterByDegree = new FilterExplainerByDegree(filterExplainerObject.getDegree());
+		FilterI<Explainer> filterByDay = new FilterExplainerByDay(filterExplainerObject.getDay());
+		FilterI<Explainer> filterByStart = new FilterExplainerByStart(filterExplainerObject.getStart());
+		FilterI<Explainer> filterByEnd = new FilterExplainerByEnd(filterExplainerObject.getEnd());
 
-		FilterI<Explainer> FilterByNameDegree = new AndFilter(FilterByName, FilterByDegree);
-		FilterI<Explainer> FilterByDayStart = new AndFilter(FilterByDay,FilterByStart);
-		FilterI<Explainer> FilterByDayStartEnd = new AndFilter(FilterByDayStart,FilterByEnd);
+		FilterI<Explainer> filterByNameDegree = new AndFilter(filterByName, filterByDegree);
+		FilterI<Explainer> filterByDayStart = new AndFilter(filterByDay,filterByStart);
+		FilterI<Explainer> filterByDayStartEnd = new AndFilter(filterByDayStart,filterByEnd);
 
-		return new AndFilter(FilterByNameDegree, FilterByDayStartEnd).filter(explainers);
+		return new AndFilter(filterByNameDegree, filterByDayStartEnd).filter(explainers);
 	}
 }
