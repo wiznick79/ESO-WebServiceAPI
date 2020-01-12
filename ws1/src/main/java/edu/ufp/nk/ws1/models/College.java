@@ -22,4 +22,7 @@ public class College extends BaseModel {
     @JsonManagedReference
     private Set<Degree> degrees = new HashSet<>();
 
+    public College(String name){
+        this.name = name;
+    }
 }
