@@ -3,14 +3,19 @@ package edu.ufp.nk.ws1.services;
 import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.models.Explainer;
+import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.repositories.AvailabilityRepo;
 import edu.ufp.nk.ws1.repositories.DegreeRepo;
 import edu.ufp.nk.ws1.repositories.ExplainerRepo;
+import edu.ufp.nk.ws1.repositories.LanguageRepo;
+import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerObject;
+import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,12 +24,17 @@ public class ExplainerService {
     private ExplainerRepo explainerRepo;
     private AvailabilityRepo availabilityRepo;
     private DegreeRepo degreeRepo;
+    private LanguageRepo languageRepo;
+    private FilterExplainerService filterExplainerService;
 
     @Autowired
-    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo, DegreeRepo degreeRepo){
+    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo, DegreeRepo degreeRepo,
+                             LanguageRepo languageRepo, FilterExplainerService filterExplainerService) {
         this.explainerRepo=explainerRepo;
         this.availabilityRepo = availabilityRepo;
         this.degreeRepo = degreeRepo;
+        this.languageRepo = languageRepo;
+        this.filterExplainerService = filterExplainerService;
     }
 
     public Set<Explainer> findAll(){
@@ -52,7 +62,6 @@ public class ExplainerService {
         if (optionalExplainer.isEmpty()
                 || availability.getStart().isAfter(availability.getEnd())
                 || availability.getStart().equals(availability.getEnd())
-                || availability.getDayOfWeek()<1 || availability.getDayOfWeek()>7
                 || Duration.between(availability.getStart(),availability.getEnd()).toHours()<1 )
             return Optional.empty();
 
@@ -75,6 +84,35 @@ public class ExplainerService {
         this.explainerRepo.save(optionalExplainer.get());
 
         return optionalExplainer;
+    }
+
+    public Optional<Explainer> addLanguage(Explainer explainer, String language) {
+        Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(explainer.getName());
+        Optional<Language> optionalLanguage = this.languageRepo.findByName(language);
+        // if explainer is empty, end function
+        if (optionalExplainer.isEmpty())
+            return Optional.empty();
+        // language is not in Repo, it will create it, then add it to the explainer
+        if (optionalLanguage.isEmpty()) {
+            if (!language.isEmpty()) {
+                Language newLanguage = new Language(language);
+                this.languageRepo.save(newLanguage);
+                optionalExplainer.get().getLanguages().add(newLanguage);
+            }
+            else return Optional.empty();
+        }
+        else optionalExplainer.get().getLanguages().add(optionalLanguage.get());
+
+        this.explainerRepo.save(optionalExplainer.get());
+
+        return optionalExplainer;
+    }
+
+    public Set<Explainer> filterExplainers(Map<String, String> query){
+        FilterExplainerObject filterExplainerObject = new FilterExplainerObject(query);
+        Set<Explainer> explainers = this.findAll();
+
+        return this.filterExplainerService.filter(explainers, filterExplainerObject);
     }
 
 

@@ -5,6 +5,7 @@ import edu.ufp.nk.ws1.repositories.AvailabilityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Optional;
@@ -33,7 +34,8 @@ public class AvailabilityService {
     }
 
     public Optional<Availability> createAvailability(Availability availability) {
-        Optional<Availability> optionalAvailability = this.availabilityRepo.findByDayOfWeekAndStart(availability.getDayOfWeek(), availability.getStart());
+        Optional<Availability> optionalAvailability = this.availabilityRepo.findByDayAndStart(availability.getDay() , availability.getStart());
+
         if (optionalAvailability.isPresent()){
             return Optional.empty();
         }
@@ -41,7 +43,7 @@ public class AvailabilityService {
         return Optional.of(createAvailability);
     }
 
-    public Optional<Availability> findByDayOfWeekAndStart (int day, LocalTime start) {
-        return this.availabilityRepo.findByDayOfWeekAndStart(day, start);
+    public Optional<Availability> findByDayOfWeekAndStart (LocalDate day, LocalTime start) {
+        return this.availabilityRepo.findByDayAndStart(day, start);
     }
 }

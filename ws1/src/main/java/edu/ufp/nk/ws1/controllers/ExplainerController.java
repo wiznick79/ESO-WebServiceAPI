@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -30,10 +32,9 @@ public class ExplainerController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Explainer>> getAllExplainers(){
-        this.logger.info("Received a get request");
-
-        return ResponseEntity.ok(this.explainerService.findAll());
+    public ResponseEntity<Iterable<Explainer>> searchExplainers(@RequestParam Map<String, String> query){
+        System.out.println(query);
+        return ResponseEntity.ok(this.explainerService.filterExplainers(query));
     }
 
     @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
@@ -100,6 +101,23 @@ public class ExplainerController {
 
         throw new NoExplainerException();
     }
+
+    @PostMapping(value ="/{language}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Explainer> addLanguage(@PathVariable("language") String language, @RequestBody Explainer explainer) {
+        this.logger.info("Received a post request");
+
+        if (this.explainerService.findByName(explainer.getName()).isEmpty())
+            throw new NoExplainerException();
+
+        Optional<Explainer> explainerOptional = this.explainerService.addLanguage(explainer, language);
+
+        if (explainerOptional.isPresent()){
+            return ResponseEntity.ok(explainerOptional.get());
+        }
+
+        throw new NoExplainerException();
+    }
+
 
 
     /*

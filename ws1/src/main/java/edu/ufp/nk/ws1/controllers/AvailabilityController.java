@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
@@ -54,7 +55,7 @@ public class AvailabilityController {
         if (availabilityOptional.isPresent()) {
             return ResponseEntity.ok(availabilityOptional.get());
         }
-        throw new AvailabilityController.AvailabilityAlreadyExistsException(availability.getStart(),availability.getDayOfWeek());
+        throw new AvailabilityController.AvailabilityAlreadyExistsException(availability.getStart(), availability.getDay());
     }
 
     /*
@@ -70,7 +71,7 @@ public class AvailabilityController {
 
     @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Availability already exists")
     private static class AvailabilityAlreadyExistsException extends RuntimeException {
-        public AvailabilityAlreadyExistsException(LocalTime time, int day) {
+        public AvailabilityAlreadyExistsException(LocalTime time, LocalDate day) {
             super("An availability on day: "+day+" "+time+" already exists");
         }
     }
