@@ -92,7 +92,7 @@ public class AppointmentControllerTest {
         assertEquals(appointment, responseAppointment);
 
         this.mockMvc.perform(
-                get("/appointment/number=2")
+                get("/appointment/id=2")
         ).andExpect(
                 status().isNotFound()
         );
