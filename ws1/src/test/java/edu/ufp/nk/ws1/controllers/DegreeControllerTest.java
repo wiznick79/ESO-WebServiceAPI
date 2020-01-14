@@ -60,7 +60,7 @@ public class DegreeControllerTest {
         this.mockMvc.perform(
                 post("/degree/2").contentType(MediaType.APPLICATION_JSON).content(existingDegreeJson)
         ).andExpect(
-                status().isNotFound()
+                status().isBadRequest()
                 //TODO:................
         );
 
