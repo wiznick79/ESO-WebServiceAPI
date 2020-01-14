@@ -9,16 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest (controllers = StudentController.class)
 public class StudentControllerTest {
@@ -46,6 +43,7 @@ public class StudentControllerTest {
                 status().isOk()
         );
 
+        //EXISTING STUDENT
         Student existingStudent = new Student("Nikos", 37000);
 
         when(this.studentService.createStudent(existingStudent)).thenReturn(Optional.empty());
@@ -70,6 +68,7 @@ public class StudentControllerTest {
 
    @Test
     void getStudentById() throws Exception{
+
         Student student = new Student("asda", 123);
         student.setId(1L);
 
@@ -116,7 +115,29 @@ public class StudentControllerTest {
         ).andExpect(
                 status().isNotFound()
         );
+    }
 
+    @Test
+    void getStudentByName() throws Exception{
+        Student student = new Student("asda", 123);
+        when(this.studentService.findByName("asda")).thenReturn(Optional.of(student));
+
+        String responseJson=this.mockMvc.perform(
+                get("/student/name=asda")
+        ).andExpect(
+                status().isOk()
+        ).andReturn().getResponse().getContentAsString();
+
+
+        Student responseStudent = this.objectMapper.readValue(responseJson, Student.class);
+        this.objectMapper.readValue(responseJson,Student.class);
+        assertEquals(student, responseStudent);
+
+        this.mockMvc.perform(
+                get("/student/name=china")
+        ).andExpect(
+                status().isNotFound()
+        );
     }
 
 

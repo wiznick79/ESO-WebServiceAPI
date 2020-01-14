@@ -55,6 +55,17 @@ public class StudentController {
         throw new NoStudentException();
     }
 
+    @RequestMapping(value = "/name={name}", method = RequestMethod.GET)
+    public ResponseEntity<Student> getStudentByName(@PathVariable("name") String name) throws NoStudentException{
+        this.logger.info("Received a get request");
+
+        Optional<Student> optionalStudent=this.studentService.findByName(name);
+        if(optionalStudent.isPresent()){
+            return ResponseEntity.ok(optionalStudent.get());
+        }
+        throw new NoStudentException();
+    }
+
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
