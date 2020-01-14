@@ -112,4 +112,12 @@ public class ExplainerControllerTest {
         );
 
     }
+
+    /*@Test
+    void putExplainer() throws Exception{
+        Explainer explainer = new Explainer("Nikos Perris");
+        when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
+
+        //TODO: see how to perform a put
+    }*/
 }

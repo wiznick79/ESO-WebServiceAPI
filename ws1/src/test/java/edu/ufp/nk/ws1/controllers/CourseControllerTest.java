@@ -53,7 +53,7 @@ public class CourseControllerTest {
                 status().isOk()
         );
 
-       /* //Existing Course
+       //Existing Course
         Course course1 = new Course("Multimedia");
         String jsonExistingCourse = this.objectMapper.writeValueAsString(course1);
         when(this.courseService.createCourseByDegree(course1, 1L)).thenReturn(Optional.of(course1));
@@ -61,7 +61,7 @@ public class CourseControllerTest {
                 post("/course/1").contentType(MediaType.APPLICATION_JSON).content(jsonExistingCourse)
         ).andExpect(
                 status().isBadRequest()
-        );*/
+        );
 
 
        /*//Existing Course
