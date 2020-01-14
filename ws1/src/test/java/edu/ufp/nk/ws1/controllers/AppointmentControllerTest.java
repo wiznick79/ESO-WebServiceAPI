@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.models.Student;
+import edu.ufp.nk.ws1.repositories.StudentRepo;
 import edu.ufp.nk.ws1.services.AppointmentService;
 import edu.ufp.nk.ws1.services.ExplainerService;
 import edu.ufp.nk.ws1.services.StudentService;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,6 +20,7 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,6 +38,8 @@ public class AppointmentControllerTest {
     private ExplainerService explainerService;
     @MockBean
     private StudentService studentService;
+    @MockBean
+    private StudentRepo studentRepo;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -44,25 +49,47 @@ public class AppointmentControllerTest {
     @Test
     void createAppointment() throws Exception{
         Student student = new Student("Alvaro", 37000);
-        student.setId(1L);
+        student.setId(9L);
+        when(this.studentService.findByName("Alvaro")).thenReturn(Optional.of(student));
         LocalDate d1 = LocalDate.now();
         LocalTime t1 = LocalTime.now();
         LocalTime t2 = LocalTime.of(23,1);
         Explainer explainer = new Explainer("Nikos Perris");
         Appointment appointment = new Appointment(d1,t1,student,explainer);
+        when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
 
 
 
         String jsonRequest = this.objectMapper.writeValueAsString(appointment);
         System.out.println(jsonRequest);
-
         when(appointmentService.createAppointment(appointment)).thenReturn(Optional.of(appointment));
-
-
         this.mockMvc.perform(
                 post("/appointment").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
+        );
+
+
+        //non existing student
+        Student student1 = new Student("Student Not Saved", 37000);
+        Appointment appointmentWithoutStudent = new Appointment(d1,t1,student1,explainer);
+        String jsonNotFoundStudent = this.objectMapper.writeValueAsString(appointmentWithoutStudent);
+        when(appointmentService.createAppointment(appointmentWithoutStudent)).thenReturn(Optional.of(appointmentWithoutStudent));
+        this.mockMvc.perform(
+                post("/appointment").contentType(MediaType.APPLICATION_JSON).content(jsonNotFoundStudent)
+        ).andExpect(
+                status().isNotFound()
+        );
+
+        //non existing explainer
+        Explainer explainer1 = new Explainer("Explainer not saved");
+        Appointment appointmentWithoutExplainer = new Appointment(d1,t1,student,explainer1);
+        String jsonNotFoundExplainer = this.objectMapper.writeValueAsString(appointmentWithoutExplainer);
+        when(appointmentService.createAppointment(appointmentWithoutExplainer)).thenReturn(Optional.of(appointmentWithoutExplainer));
+        this.mockMvc.perform(
+                post("/appointment").contentType(MediaType.APPLICATION_JSON).content(jsonNotFoundExplainer)
+        ).andExpect(
+                status().isNotFound()
         );
 
     }

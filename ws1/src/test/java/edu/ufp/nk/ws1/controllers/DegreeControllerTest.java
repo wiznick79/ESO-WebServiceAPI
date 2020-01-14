@@ -40,7 +40,7 @@ public class DegreeControllerTest {
     void createDegreeByCollege() throws Exception{
        Degree degree = new Degree("Eng Infomartica");
         College college = new College("Ciencias");
-        college.setId(2L);
+        when(collegeService.createCollege(college)).thenReturn(Optional.of(college));
 
        String jsonRequest = this.objectMapper.writeValueAsString(degree);
 
@@ -55,12 +55,12 @@ public class DegreeControllerTest {
 
         //Existing Degree
         Degree existingDegree = new Degree("Eng Infomartica");
-        when(this.degreeService.createDegreeByCollege(existingDegree, 2L)).thenReturn(Optional.empty());
         String existingDegreeJson = this.objectMapper.writeValueAsString(existingDegree);
+        when(this.degreeService.createDegreeByCollege(existingDegree, 1L)).thenReturn(Optional.empty());
         this.mockMvc.perform(
                 post("/degree/2").contentType(MediaType.APPLICATION_JSON).content(existingDegreeJson)
         ).andExpect(
-                status().isNotFound()
+                status().isBadRequest()
                 //TODO:................
         );
 
