@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = AvailabilityController.class)
@@ -88,5 +89,30 @@ public class AvailabilityControllerTest {
         Set<Availability> results=this.objectMapper.readValue(responseGetAllAvailabilities,new TypeReference<Set<Availability>>(){});
 
         assertTrue(results.containsAll(availabilities));
+    }
+
+
+    @Test
+    void createAvailability() throws Exception{
+        Explainer explainer = new Explainer("Nikos Perris");
+        LocalDate d1 = LocalDate.now();
+        LocalTime t1 = LocalTime.now();
+        LocalTime t2 = LocalTime.of(23,0);
+        Availability availability = new Availability(explainer,t1,t2,d1);
+
+        String jsonRequest = this.objectMapper.writeValueAsString(availability);
+        when(this.availabilityService.createAvailability(availability)).thenReturn(Optional.of(availability));
+
+        String response = this.mockMvc.perform(
+                post("/availability").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
+        ).andExpect(
+                status().isOk()
+        ).andReturn().getResponse().getContentAsString();
+
+        Availability  responseAvailability = this.objectMapper.readValue(response, Availability.class);
+        assertEquals(responseAvailability, availability);
+
+
+
     }
 }
