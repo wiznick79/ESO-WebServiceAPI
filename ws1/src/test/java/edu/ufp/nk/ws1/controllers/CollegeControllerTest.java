@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.services.CollegeService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,8 +36,8 @@ public class CollegeControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Test
+    @VisibleForTesting
     void createCollege() throws Exception{
         College college = new College("UFP");
 
