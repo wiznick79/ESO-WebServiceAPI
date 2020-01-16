@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.models.Student;
-import edu.ufp.nk.ws1.repositories.StudentRepo;
 import edu.ufp.nk.ws1.services.AppointmentService;
 import edu.ufp.nk.ws1.services.ExplainerService;
 import edu.ufp.nk.ws1.services.StudentService;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,9 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,8 +34,7 @@ public class AppointmentControllerTest {
     private ExplainerService explainerService;
     @MockBean
     private StudentService studentService;
-    @MockBean
-    private StudentRepo studentRepo;
+
 
     @Autowired
     private ObjectMapper objectMapper;

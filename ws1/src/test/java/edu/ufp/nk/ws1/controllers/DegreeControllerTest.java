@@ -3,7 +3,6 @@ package edu.ufp.nk.ws1.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.models.Degree;
-import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.CollegeService;
 import edu.ufp.nk.ws1.services.DegreeService;
 import org.junit.jupiter.api.Test;
@@ -12,9 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
