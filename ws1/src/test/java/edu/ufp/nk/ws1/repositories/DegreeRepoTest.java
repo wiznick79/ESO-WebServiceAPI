@@ -1,6 +1,7 @@
 package edu.ufp.nk.ws1.repositories;
 
 import edu.ufp.nk.ws1.models.Degree;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,7 +14,8 @@ public class DegreeRepoTest {
 
 
     @Test
-    public void test(){
+    @VisibleForTesting
+    void test(){
         Degree degree = new Degree("Engenharia Informatica");
         Degree degree1 = new Degree("Enfermagem");
         this.degreeRepo.save(degree);

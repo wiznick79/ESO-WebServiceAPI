@@ -3,6 +3,7 @@ package edu.ufp.nk.ws1.services.filters;
 import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerByStart;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 class FilterExplainerByStartTest {
     @Test
+    @VisibleForTesting
     void filter(){
         LocalTime t1 = LocalTime.of(10,0);
         LocalTime t2 = LocalTime.of(12,0);

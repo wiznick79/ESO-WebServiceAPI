@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Student;
 import edu.ufp.nk.ws1.services.StudentService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,6 +35,7 @@ public class StudentControllerTest {
 
 
     @Test
+    @VisibleForTesting
     void createStudent() throws Exception{
         Student student = new Student("Alvaro Magalhães", 37000);
 
@@ -65,6 +67,7 @@ public class StudentControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAllStudents() throws Exception{
         Set<Student> students = new HashSet<>();
         students.add(new Student("Nikos Perris", 1234));
@@ -84,7 +87,8 @@ public class StudentControllerTest {
     }
 
    @Test
-    void getStudentById() throws Exception{
+   @VisibleForTesting
+   void getStudentById() throws Exception{
 
         Student student = new Student("asda", 123);
         student.setId(1L);
@@ -110,6 +114,7 @@ public class StudentControllerTest {
    }
 
     @Test
+    @VisibleForTesting
     void getStudentByNumber() throws Exception{
         Student student = new Student("asda", 123);
         student.setStudentNumber(123);
@@ -135,6 +140,7 @@ public class StudentControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getStudentByName() throws Exception{
         Student student = new Student("asda", 123);
         when(this.studentService.findByName("asda")).thenReturn(Optional.of(student));

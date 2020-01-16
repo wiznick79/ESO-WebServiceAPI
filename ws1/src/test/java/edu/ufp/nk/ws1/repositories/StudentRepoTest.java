@@ -1,6 +1,7 @@
 package edu.ufp.nk.ws1.repositories;
 
 import edu.ufp.nk.ws1.models.Student;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,7 +15,8 @@ public class StudentRepoTest {
     private StudentRepo studentRepo;
 
     @Test
-    public void test(){
+    @VisibleForTesting
+    void test(){
         Student student = new Student("student", 3700);
         this.studentRepo.save(student);
         System.out.println(student.getId());

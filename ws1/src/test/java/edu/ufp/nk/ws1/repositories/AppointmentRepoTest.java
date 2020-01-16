@@ -3,6 +3,7 @@ package edu.ufp.nk.ws1.repositories;
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.models.Student;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,7 +24,8 @@ public class AppointmentRepoTest {
     private ExplainerRepo explainerRepo;
 
     @Test
-    public void test(){
+    @VisibleForTesting
+    void test(){
         LocalDate d1 = LocalDate.of(1998,1,1);
         LocalTime t1 = LocalTime.now();
         Student student = new Student("Avaro", 37000);
