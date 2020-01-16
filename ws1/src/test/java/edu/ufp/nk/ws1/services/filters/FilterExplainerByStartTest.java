@@ -26,5 +26,8 @@ class FilterExplainerByStartTest {
 
         FilterExplainerByStart filterExplainerByStart = new FilterExplainerByStart(LocalTime.of(10,0));
         assertEquals(1,filterExplainerByStart.filter(explainers).size());
+        FilterExplainerByStart filterExplainerByStart1 = new FilterExplainerByStart(LocalTime.of(9,0));
+        //TODO::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        assertEquals(0,filterExplainerByStart1.filter(explainers).size());
     }
 }

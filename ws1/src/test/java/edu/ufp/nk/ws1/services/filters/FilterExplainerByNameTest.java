@@ -3,7 +3,6 @@ package edu.ufp.nk.ws1.services.filters;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerByName;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashSet;
 import java.util.Set;
 
