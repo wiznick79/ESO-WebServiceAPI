@@ -1,7 +1,13 @@
 package edu.ufp.nk.ws1;
 
-import edu.ufp.nk.ws1.models.*;
-import edu.ufp.nk.ws1.repositories.*;
+import edu.ufp.nk.ws1.models.Degree;
+import edu.ufp.nk.ws1.models.Course;
+import edu.ufp.nk.ws1.models.College;
+import edu.ufp.nk.ws1.models.Student;
+import edu.ufp.nk.ws1.repositories.DegreeRepo;
+import edu.ufp.nk.ws1.repositories.StudentRepo;
+import edu.ufp.nk.ws1.repositories.CourseRepo;
+import edu.ufp.nk.ws1.repositories.CollegeRepo;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
