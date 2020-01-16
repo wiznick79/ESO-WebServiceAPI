@@ -1,5 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.models.Course;
@@ -14,9 +15,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,46 +45,34 @@ public class CourseControllerTest {
     @Test
     void createCourseByDegree() throws Exception {
         Course course = new Course("Multimedia");
+        College college = new College("Ciencias");
         Degree degree = new Degree("Eng Informatica");
         degree.setId(1L);
+        college.setId(1L);
+        when(degreeService.createDegreeByCollege(degree,1L)).thenReturn(Optional.of(degree));
 
 
         String jsonRequest = this.objectMapper.writeValueAsString(course);
-        when(this.courseService.createCourseByDegree(course, 1L)).thenReturn(Optional.of(course));
-        this.mockMvc.perform(
+        when(courseService.createCourseByDegree(course, 1L)).thenReturn(Optional.of(course));
+        String response = this.mockMvc.perform(
                 post("/course/1").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
-        );
+        ).andReturn().getResponse().getContentAsString();
 
-       //Existing Course
+        Course responseCourse = this.objectMapper.readValue(response, Course.class);
+        assertEquals(responseCourse, course);
+
+       /*//Existing Course
         Course course1 = new Course("Multimedia");
         String jsonExistingCourse = this.objectMapper.writeValueAsString(course1);
-        when(this.courseService.createCourseByDegree(course1, 1L)).thenReturn(Optional.of(course1));
+        when(courseService.createCourseByDegree(course1, 1L)).thenReturn(Optional.empty());
         this.mockMvc.perform(
                 post("/course/1").contentType(MediaType.APPLICATION_JSON).content(jsonExistingCourse)
         ).andExpect(
-                status().isBadRequest()
-        );
-
-
-       /*//Existing Course
-        Course existingCourse = new Course("Multimedia");
-        College college = new College("ciencias");
-        college.setId(1L);
-        when(this.collegeService.createCollege(college)).thenReturn(Optional.of(college));
-        String existingCourseJson = this.objectMapper.writeValueAsString(existingCourse);
-        when(this.degreeService.createDegreeByCollege(degree,1L)).thenReturn(Optional.of(degree));
-        when(this.courseService.createCourseByDegree(existingCourse,1L)).thenReturn(Optional.empty());
-
-
-        this.mockMvc.perform(
-                post("/course/1").contentType(MediaType.APPLICATION_JSON).content(existingCourseJson)
-        ).andExpect(
                 status().isNotFound()
+        );*/
                 //TODO:................
-        );
-
 
         //Non Existing Degree
         Course courseN = new Course("Multimedia");
@@ -94,7 +86,26 @@ public class CourseControllerTest {
                 post("/course/10").contentType(MediaType.APPLICATION_JSON).content(jsonDegreeNotExistRequest)
         ).andExpect(
                 status().isNotFound()
-        );*/
+        );
+    }
+
+    @Test
+    void getAllCourses() throws Exception{
+        Set<Course> courses = new HashSet<>();
+        courses.add(new Course("Base de Dados"));
+        courses.add(new Course("Engenharia de Software"));
+        courses.add(new Course("Multimedia"));
+
+        when(this.courseService.findAll()).thenReturn(courses);
+
+        String responseGetAllCourses = this.mockMvc.perform(get("/course")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Set<Course> results=this.objectMapper.readValue(responseGetAllCourses,new TypeReference<Set<Course>>(){});
+
+        assertTrue(results.containsAll(courses));
     }
 
     @Test
