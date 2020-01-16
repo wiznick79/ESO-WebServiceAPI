@@ -8,6 +8,7 @@ import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.services.CollegeService;
 import edu.ufp.nk.ws1.services.CourseService;
 import edu.ufp.nk.ws1.services.DegreeService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,12 +44,14 @@ public class CourseControllerTest {
     private CollegeService collegeService;
 
     @Test
+    @VisibleForTesting
     void createCourseByDegree() throws Exception {
         Course course = new Course("Multimedia");
         College college = new College("Ciencias");
         Degree degree = new Degree("Eng Informatica");
         degree.setId(1L);
         college.setId(1L);
+        collegeService.createCollege(college);
         when(degreeService.createDegreeByCollege(degree,1L)).thenReturn(Optional.of(degree));
 
 
@@ -90,6 +93,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAllCourses() throws Exception{
         Set<Course> courses = new HashSet<>();
         courses.add(new Course("Base de Dados"));
@@ -109,6 +113,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getCourseById() throws Exception {
         Course course = new Course("Multimedia");
         Degree degree = new Degree("Eng Informatica");

@@ -6,6 +6,7 @@ import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.AvailabilityService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,6 +38,7 @@ public class AvailabilityControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @VisibleForTesting
     void getAvailabilityById() throws Exception{
         Explainer explainer = new Explainer("Nikolaos Perris");
         LocalDate d1 = LocalDate.of(1998,12,1);
@@ -69,6 +71,7 @@ public class AvailabilityControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAllAvailabilities() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
         Set<Availability> availabilities = new HashSet<>();
@@ -93,6 +96,7 @@ public class AvailabilityControllerTest {
 
 
     @Test
+    @VisibleForTesting
     void createAvailability() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
         LocalDate d1 = LocalDate.now();

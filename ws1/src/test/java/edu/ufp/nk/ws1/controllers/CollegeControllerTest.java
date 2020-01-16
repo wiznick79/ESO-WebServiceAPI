@@ -37,6 +37,7 @@ public class CollegeControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @VisibleForTesting
     void createCollege() throws Exception{
         College college = new College("UFP");
 
@@ -67,6 +68,7 @@ public class CollegeControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAllColleges() throws Exception{
         Set<College> colleges = new HashSet<>();
         colleges.add(new College("Saude"));

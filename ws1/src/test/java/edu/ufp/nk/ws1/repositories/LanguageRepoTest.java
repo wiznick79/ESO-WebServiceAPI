@@ -1,6 +1,7 @@
 package edu.ufp.nk.ws1.repositories;
 
 import edu.ufp.nk.ws1.models.Language;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,7 +13,8 @@ public class LanguageRepoTest {
     private LanguageRepo languageRepo;
 
     @Test
-    public void test(){
+    @VisibleForTesting
+    void test(){
         Language language = new Language("Portuguese");
         Language language1 = new Language("Greek");
         this.languageRepo.save(language);

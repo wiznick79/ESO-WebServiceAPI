@@ -2,9 +2,12 @@ package edu.ufp.nk.ws1.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.ufp.nk.ws1.models.College;
+import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.DegreeService;
 import edu.ufp.nk.ws1.services.ExplainerService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,6 +41,7 @@ public class ExplainerControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @VisibleForTesting
     void createExplainer() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
 
@@ -71,6 +75,7 @@ public class ExplainerControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAllExplainers() throws Exception{
         Set<Explainer> explainers = new HashSet<>();
         explainers.add(new Explainer("Nikos Perris"));
@@ -90,9 +95,15 @@ public class ExplainerControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getExplainerById() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
+        Degree degree = new Degree("Informatica");
+        College college = new College("Ciencias");
+        college.setId(1L);
+        degreeService.createDegreeByCollege(degree,1L);
         explainer.setId(1L);
+        explainer.setDegree(degree);
 
         when(this.explainerService.findById(1L)).thenReturn(Optional.of(explainer));
 
@@ -113,6 +124,7 @@ public class ExplainerControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getExplainerByName() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
 
@@ -136,14 +148,18 @@ public class ExplainerControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void updateExplainer() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
         when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
 
-        mockMvc.perform(MockMvcRequestBuilders
+        String result = this.mockMvc.perform(MockMvcRequestBuilders
                 .put("/explainer/Enfermagem")
                 .content(explainer.getName()).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.degree").value("Enfermagem"));
+                .accept(MediaType.APPLICATION_JSON)).andExpect(
+                        status().isOk()
+                ).andExpect(MockMvcResultMatchers.jsonPath("$.degree").value("Enfermagem")).toString();
         //TODO: see how to perform a put
+        assertEquals(result,explainer);
     }
 }

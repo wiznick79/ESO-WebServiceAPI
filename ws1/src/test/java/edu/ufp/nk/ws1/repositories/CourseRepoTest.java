@@ -1,6 +1,7 @@
 package edu.ufp.nk.ws1.repositories;
 
 import edu.ufp.nk.ws1.models.Course;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,7 +14,8 @@ public class CourseRepoTest {
 
 
     @Test
-    public void test(){
+    @VisibleForTesting
+    void test(){
         Course course = new Course("Multimedia");
         Course course1 = new Course("Software Engineer");
         this.courseRepo.save(course);
