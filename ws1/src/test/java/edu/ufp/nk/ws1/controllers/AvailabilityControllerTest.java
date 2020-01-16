@@ -1,5 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.models.Availability;
@@ -9,11 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,5 +65,28 @@ public class AvailabilityControllerTest {
                 status().isNotFound()
         );
 
+    }
+
+    @Test
+    void getAllAvailabilities() throws Exception{
+        Explainer explainer = new Explainer("Nikos Perris");
+        Set<Availability> availabilities = new HashSet<>();
+        LocalDate d1 = LocalDate.now();
+        LocalTime t1 = LocalTime.now();
+        LocalTime t2 = LocalTime.of(23,0);
+        availabilities.add(new Availability(explainer,t1,t2,d1));
+        availabilities.add(new Availability(explainer,t1,t2,d1));
+        availabilities.add(new Availability(explainer,t1,t2,d1));
+
+        when(this.availabilityService.findAll()).thenReturn(availabilities);
+
+        String responseGetAllAvailabilities = this.mockMvc.perform(get("/availability")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Set<Availability> results=this.objectMapper.readValue(responseGetAllAvailabilities,new TypeReference<Set<Availability>>(){});
+
+        assertTrue(results.containsAll(availabilities));
     }
 }

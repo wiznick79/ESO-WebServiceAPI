@@ -5,13 +5,11 @@ import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerObject;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FilterExplainerServiceTest {

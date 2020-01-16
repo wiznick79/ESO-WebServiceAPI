@@ -1,5 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.LanguageService;
@@ -9,10 +10,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
+import java.util.HashSet;
 import java.util.Optional;
-
+import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,16 +36,19 @@ public class LanguageControllerTest {
     @Test
     void createLanguage() throws Exception{
         Language language = new Language("German");
-
         String jsonRequest=this.objectMapper.writeValueAsString(language);
         when(languageService.createLanguage(language)).thenReturn(Optional.of(language));
 
 
-        this.mockMvc.perform(
+        String response = this.mockMvc.perform(
                 post("/language").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
-        );
+        ).andReturn().getResponse().getContentAsString();
+
+        //Important
+        Language responseLanguage = this.objectMapper.readValue(response, Language.class);
+        assertEquals(responseLanguage, language);
 
         Language existingLanguage = new Language("German");
 
@@ -84,5 +89,26 @@ public class LanguageControllerTest {
         );
 
     }
+
+    @Test
+    void getAllLanguage() throws Exception {
+        Set<Language> languages = new HashSet<>();
+        languages.add(new Language("Portuguese"));
+        languages.add(new Language("English"));
+        languages.add(new Language("Greek"));
+
+        when(this.languageService.findAll()).thenReturn(languages);
+
+        String responseGetAllLanguages = this.mockMvc.perform(get("/language")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Set<Language> results = this.objectMapper.readValue(responseGetAllLanguages, new TypeReference<Set<Language>>() {
+        });
+
+        assertTrue(results.containsAll(languages));
+    }
+
 
 }

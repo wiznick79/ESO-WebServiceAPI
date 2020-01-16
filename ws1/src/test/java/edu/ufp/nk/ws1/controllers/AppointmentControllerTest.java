@@ -1,5 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Appointment;
 import edu.ufp.nk.ws1.models.Explainer;
@@ -15,8 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,16 +57,19 @@ public class AppointmentControllerTest {
         Appointment appointment = new Appointment(d1,t1,student,explainer);
         when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
 
-
-
         String jsonRequest = this.objectMapper.writeValueAsString(appointment);
         System.out.println(jsonRequest);
+
         when(appointmentService.createAppointment(appointment)).thenReturn(Optional.of(appointment));
-        this.mockMvc.perform(
+        String response = this.mockMvc.perform(
                 post("/appointment").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
-        );
+        ).andReturn().getResponse().getContentAsString();
+
+        Appointment responseAppointment = this.objectMapper.readValue(response, Appointment.class);
+        assertEquals(responseAppointment, appointment);
+
 
 
         //non existing student
@@ -118,5 +125,28 @@ public class AppointmentControllerTest {
         ).andExpect(
                 status().isNotFound()
         );
+    }
+
+    @Test
+    void getAllAppointments() throws Exception{
+        Explainer explainer = new Explainer("Nikos Perris");
+        Student student = new Student("Alvaro", 37000);
+        Set<Appointment> appointments = new HashSet<>();
+        LocalDate d1 = LocalDate.now();
+        LocalTime t1 = LocalTime.now();
+        appointments.add(new Appointment(d1,t1,student,explainer));
+        appointments.add(new Appointment(d1,t1,student,explainer));
+        appointments.add(new Appointment(d1,t1,student,explainer));
+
+        when(this.appointmentService.findAll()).thenReturn(appointments);
+
+        String responseGetAllAppointments = this.mockMvc.perform(get("/appointment")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Set<Appointment> results=this.objectMapper.readValue(responseGetAllAppointments,new TypeReference<Set<Appointment>>(){});
+
+        assertTrue(results.containsAll(appointments));
     }
 }
