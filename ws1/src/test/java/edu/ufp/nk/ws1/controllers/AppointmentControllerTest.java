@@ -52,7 +52,6 @@ public class AppointmentControllerTest {
         when(this.studentService.findByName("Alvaro")).thenReturn(Optional.of(student));
         LocalDate d1 = LocalDate.now();
         LocalTime t1 = LocalTime.now();
-        LocalTime t2 = LocalTime.of(23,1);
         Explainer explainer = new Explainer("Nikos Perris");
         Appointment appointment = new Appointment(d1,t1,student,explainer);
         when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
