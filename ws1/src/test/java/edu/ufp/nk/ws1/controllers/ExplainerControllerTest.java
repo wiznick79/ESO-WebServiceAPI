@@ -1,5 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.services.DegreeService;
@@ -10,9 +11,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import java.util.HashSet;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Set;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,11 +45,14 @@ public class ExplainerControllerTest {
         when(explainerService.createExplainer(explainer)).thenReturn(Optional.of(explainer));
 
 
-        this.mockMvc.perform(
+        String response = this.mockMvc.perform(
                 post("/explainer").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
-        );
+        ).andReturn().getResponse().getContentAsString();
+
+        Explainer responseExplainer = this.objectMapper.readValue(response, Explainer.class);
+        assertEquals(responseExplainer, explainer);
 
         Explainer existingExpainer = new Explainer("Nikos Perris");
 
@@ -63,8 +71,22 @@ public class ExplainerControllerTest {
     }
 
     @Test
-    void getAllExplainers(){
+    void getAllExplainers() throws Exception{
+        Set<Explainer> explainers = new HashSet<>();
+        explainers.add(new Explainer("Nikos Perris"));
+        explainers.add(new Explainer("Pedro Alves"));
+        explainers.add(new Explainer("Alvaro Magalhaes"));
 
+        when(this.explainerService.findAll()).thenReturn(explainers);
+
+        String responseGetAllExplainers = this.mockMvc.perform(get("/explainer")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Set<Explainer> results=this.objectMapper.readValue(responseGetAllExplainers,new TypeReference<Set<Explainer>>(){});
+
+        assertTrue(results.containsAll(explainers));
     }
 
     @Test
@@ -113,11 +135,15 @@ public class ExplainerControllerTest {
 
     }
 
-    /*@Test
-    void putExplainer() throws Exception{
+    @Test
+    void updateExplainer() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
         when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
 
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/explainer/Enfermagem")
+                .content(explainer.getName()).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.degree").value("Enfermagem"));
         //TODO: see how to perform a put
-    }*/
+    }
 }

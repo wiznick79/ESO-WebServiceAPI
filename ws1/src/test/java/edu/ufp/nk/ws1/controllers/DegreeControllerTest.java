@@ -1,9 +1,9 @@
 package edu.ufp.nk.ws1.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.models.Degree;
-import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.CollegeService;
 import edu.ufp.nk.ws1.services.DegreeService;
 import org.junit.jupiter.api.Test;
@@ -13,9 +13,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,20 +40,23 @@ public class DegreeControllerTest {
 
 
     @Test
-    void createDegreeByCollege() throws Exception{
-       Degree degree = new Degree("Eng Infomartica");
+    void createDegreeByCollege() throws Exception {
+        Degree degree = new Degree("Eng Infomartica");
         College college = new College("Ciencias");
         when(collegeService.createCollege(college)).thenReturn(Optional.of(college));
 
-       String jsonRequest = this.objectMapper.writeValueAsString(degree);
+        String jsonRequest = this.objectMapper.writeValueAsString(degree);
 
-        when(degreeService.createDegreeByCollege(degree, 2L)).thenReturn(Optional.of(degree));
+        when(degreeService.createDegreeByCollege(degree, 1L)).thenReturn(Optional.of(degree));
 
-        this.mockMvc.perform(
-                post("/degree/2").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
+        String response =this.mockMvc.perform(
+                post("/degree/1").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
-        );
+        ).andReturn().getResponse().getContentAsString();
+
+        Degree responseDegree = this.objectMapper.readValue(response, Degree.class);
+        assertEquals(responseDegree, degree);
 
 
         //Existing Degree
@@ -58,9 +64,9 @@ public class DegreeControllerTest {
         String existingDegreeJson = this.objectMapper.writeValueAsString(existingDegree);
         when(this.degreeService.createDegreeByCollege(existingDegree, 1L)).thenReturn(Optional.empty());
         this.mockMvc.perform(
-                post("/degree/2").contentType(MediaType.APPLICATION_JSON).content(existingDegreeJson)
+                post("/degree/1").contentType(MediaType.APPLICATION_JSON).content(existingDegreeJson)
         ).andExpect(
-                status().isBadRequest()
+                status().isNotFound()
                 //TODO:................
         );
 
@@ -78,7 +84,6 @@ public class DegreeControllerTest {
         );
 
 
-
     }
 
     @Test
@@ -88,7 +93,7 @@ public class DegreeControllerTest {
 
         when(this.degreeService.findById(1L)).thenReturn(Optional.of(degree));
 
-        String responseJson=this.mockMvc.perform(
+        String responseJson = this.mockMvc.perform(
                 get("/degree/id=1")
         ).andExpect(
                 status().isOk()
@@ -105,4 +110,25 @@ public class DegreeControllerTest {
         );
     }
 
+
+    @Test
+    void getAllDegrees() throws Exception {
+        Set<Degree> degrees = new HashSet<>();
+        degrees.add(new Degree("Engenharia Informatica"));
+        degrees.add(new Degree("Psicologia"));
+        degrees.add(new Degree("Enfermagem"));
+
+        when(this.degreeService.findAll()).thenReturn(degrees);
+
+        String responseGetAllDegrees = this.mockMvc.perform(get("/degree")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Set<Degree> results = this.objectMapper.readValue(responseGetAllDegrees, new TypeReference<Set<Degree>>() {
+        });
+
+        assertTrue(results.containsAll(degrees));
     }
+
+}

@@ -1,5 +1,6 @@
 package edu.ufp.nk.ws1.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Student;
 import edu.ufp.nk.ws1.services.StudentService;
@@ -9,8 +10,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import java.util.HashSet;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Set;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,11 +41,14 @@ public class StudentControllerTest {
 
         when(studentService.createStudent(student)).thenReturn(Optional.of(student));
 
-        this.mockMvc.perform(
+        String response = this.mockMvc.perform(
                 post("/student").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
-        );
+        ).andReturn().getResponse().getContentAsString();
+
+        Student  responseStudent = this.objectMapper.readValue(response, Student.class);
+        assertEquals(responseStudent, student);
 
         //EXISTING STUDENT
         Student existingStudent = new Student("Nikos", 37000);
@@ -58,12 +65,22 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void getAllStudents() throws Exception {
-        String responseJson=this.mockMvc.perform(
-                get("/student")
-        ).andExpect(
-                status().isOk()
-        ).andReturn().getResponse().getContentAsString();
+    void getAllStudents() throws Exception{
+        Set<Student> students = new HashSet<>();
+        students.add(new Student("Nikos Perris", 1234));
+        students.add(new Student("Pedro Alves", 12314));
+        students.add(new Student("Alvaro Magalhaes", 37000));
+
+        when(this.studentService.findAll()).thenReturn(students);
+
+        String responseGetAllStudents = this.mockMvc.perform(get("/student")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Set<Student> results=this.objectMapper.readValue(responseGetAllStudents,new TypeReference<Set<Student>>(){});
+
+        assertTrue(results.containsAll(students));
     }
 
    @Test
