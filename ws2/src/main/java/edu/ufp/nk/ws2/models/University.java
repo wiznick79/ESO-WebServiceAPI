@@ -28,7 +28,10 @@ public class University extends BaseModel{
 
 
 
-
+    public void addCollege(College college){
+        this.colleges.add(college);
+        college.setUniversity(this);
+    }
 
     public University(String name, String ip){
         this.name = name;

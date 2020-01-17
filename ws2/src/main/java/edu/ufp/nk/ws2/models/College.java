@@ -30,6 +30,7 @@ public class College extends BaseModel {
     @JsonBackReference
     private University university;
 
+
     public College(String name) {
         this.name = name;
     }
