@@ -1,4 +1,4 @@
-package edu.ufp.nk.ws2.university;
+package edu.ufp.nk.ws2.models;
 
 import lombok.Data;
 
