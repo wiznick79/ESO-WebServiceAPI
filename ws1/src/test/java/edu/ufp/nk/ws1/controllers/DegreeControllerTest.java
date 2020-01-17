@@ -6,6 +6,7 @@ import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.services.CollegeService;
 import edu.ufp.nk.ws1.services.DegreeService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,6 +41,7 @@ public class DegreeControllerTest {
 
 
     @Test
+    @VisibleForTesting
     void createDegreeByCollege() throws Exception {
         Degree degree = new Degree("Eng Infomartica");
         College college = new College("Ciencias");
@@ -87,6 +89,7 @@ public class DegreeControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getDegreeById() throws Exception {
         Degree degree = new Degree("Informatica");
         degree.setId(1L);
@@ -112,6 +115,7 @@ public class DegreeControllerTest {
 
 
     @Test
+    @VisibleForTesting
     void getAllDegrees() throws Exception {
         Set<Degree> degrees = new HashSet<>();
         degrees.add(new Degree("Engenharia Informatica"));

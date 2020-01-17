@@ -8,6 +8,7 @@ import edu.ufp.nk.ws1.models.Student;
 import edu.ufp.nk.ws1.services.AppointmentService;
 import edu.ufp.nk.ws1.services.ExplainerService;
 import edu.ufp.nk.ws1.services.StudentService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -46,6 +47,7 @@ public class AppointmentControllerTest {
 
 
     @Test
+    @VisibleForTesting
     void createAppointment() throws Exception{
         Student student = new Student("Alvaro", 37000);
         student.setId(9L);
@@ -96,6 +98,7 @@ public class AppointmentControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAppointmentById()throws Exception{
         Student student = new Student("Alvaro", 37000);
         student.setId(1L);
@@ -127,6 +130,7 @@ public class AppointmentControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAllAppointments() throws Exception{
         Explainer explainer = new Explainer("Nikos Perris");
         Student student = new Student("Alvaro", 37000);

@@ -3,6 +3,7 @@ package edu.ufp.nk.ws1.services.filters;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerByLanguage;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilterExplainerByLanguageTest {
     @Test
+    @VisibleForTesting
     void filter(){
         Set<Explainer> explainers = new HashSet<>();
         Set<Language> languages = new HashSet<>();

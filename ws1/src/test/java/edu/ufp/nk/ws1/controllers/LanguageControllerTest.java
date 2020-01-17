@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.Language;
 import edu.ufp.nk.ws1.services.LanguageService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,6 +35,7 @@ public class LanguageControllerTest {
 
 
     @Test
+    @VisibleForTesting
     void createLanguage() throws Exception{
         Language language = new Language("German");
         String jsonRequest=this.objectMapper.writeValueAsString(language);
@@ -66,6 +68,7 @@ public class LanguageControllerTest {
 
 
     @Test
+    @VisibleForTesting
     void getLanguageById() throws Exception{
         Language language = new Language("German");
         language.setId(1L);
@@ -91,6 +94,7 @@ public class LanguageControllerTest {
     }
 
     @Test
+    @VisibleForTesting
     void getAllLanguage() throws Exception {
         Set<Language> languages = new HashSet<>();
         languages.add(new Language("Portuguese"));
