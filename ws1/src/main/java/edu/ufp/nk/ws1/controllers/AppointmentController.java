@@ -61,9 +61,10 @@ public class AppointmentController {
     }
 
     @RequestMapping(value = "/date={date}", method = RequestMethod.GET)
-    public ResponseEntity<Appointment> getAppointmentByDate(@PathVariable("date") LocalDate date) throws NoAppointmentException{
+    public ResponseEntity<Appointment> getAppointmentByDate(@PathVariable("date") String date) throws NoAppointmentException{
         this.logger.info("Received a get request");
-        Optional<Appointment> optionalAppointment = this.appointmentService.findByDate(date);
+        LocalDate localDate = LocalDate.parse(date);
+        Optional<Appointment> optionalAppointment = this.appointmentService.findByDate(localDate);
         if (optionalAppointment.isPresent()) {
             return ResponseEntity.ok(optionalAppointment.get());
         }
