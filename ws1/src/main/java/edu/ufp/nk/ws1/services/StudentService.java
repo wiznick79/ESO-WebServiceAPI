@@ -15,19 +15,19 @@ public class StudentService {
     private StudentRepo studentRepo;
 
     @Autowired
-    public StudentService(StudentRepo studentRepo){
+    public StudentService(StudentRepo studentRepo) {
         this.studentRepo = studentRepo;
     }
 
-    public Set<Student> findAll(){
+    public Set<Student> findAll() {
         Set<Student> students = new HashSet<>();
-        for (Student student:this.studentRepo.findAll()){
+        for (Student student : this.studentRepo.findAll()) {
             students.add(student);
         }
         return students;
     }
 
-    public Optional<Student> findById(Long id){
+    public Optional<Student> findById(Long id) {
         return this.studentRepo.findById(id);
     }
 
@@ -39,9 +39,9 @@ public class StudentService {
         return this.studentRepo.findByStudentNumber(number);
     }
 
-    public Optional<Student> createStudent(Student student){
+    public Optional<Student> createStudent(Student student) {
         Optional<Student> optionalStudent = this.studentRepo.findByStudentNumber(student.getStudentNumber());
-        if (optionalStudent.isPresent()){
+        if (optionalStudent.isPresent()) {
             return Optional.empty();
         }
         Student createdStudent = this.studentRepo.save(student);

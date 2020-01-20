@@ -16,15 +16,15 @@ public class StudentRepoTest {
 
     @Test
     @VisibleForTesting
-    void test(){
+    void test() {
         Student student = new Student("student", 3700);
         this.studentRepo.save(student);
         System.out.println(student.getId());
-        assertEquals(1,this.studentRepo.count());
+        assertEquals(1, this.studentRepo.count());
         Student student1 = new Student("student1", 30000);
         this.studentRepo.save(student1);
         System.out.println(student1.getId());
-        assertEquals(2,studentRepo.count());
+        assertEquals(2, studentRepo.count());
 
     }
 }

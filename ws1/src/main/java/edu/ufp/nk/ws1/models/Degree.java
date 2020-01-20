@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -15,19 +16,19 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 public class Degree extends BaseModel {
 
-	// Variables
-	@Column(unique = true)
-	private String name;
+    // Variables
+    @Column(unique = true)
+    private String name;
 
-	@ManyToOne
-	@ToString.Exclude
-	@EqualsAndHashCode.Exclude
-	@JsonBackReference
-	private College college;
+    @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonBackReference
+    private College college;
 
-	// Constructor
-	public Degree(String name){
-		this.name = name;
-	}
+    // Constructor
+    public Degree(String name) {
+        this.name = name;
+    }
 
 }

@@ -21,11 +21,11 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 @Controller
-@RequestMapping ("/availability")
+@RequestMapping("/availability")
 public class AvailabilityController {
-    
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    
+
     private AvailabilityService availabilityService;
 
     //Constructor
@@ -37,7 +37,7 @@ public class AvailabilityController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Availability>> getAllAvailabilities() {
         this.logger.info("Received a get request");
-        
+
         return ResponseEntity.ok(this.availabilityService.findAll());
     }
 
@@ -74,10 +74,10 @@ public class AvailabilityController {
         }
     }
 
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Availability already exists")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Availability already exists")
     private static class AvailabilityAlreadyExistsException extends RuntimeException {
         public AvailabilityAlreadyExistsException(LocalTime time, LocalDate day) {
-            super("An availability on day: "+day+" "+time+" already exists");
+            super("An availability on day: " + day + " " + time + " already exists");
         }
     }
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface ExplainerRepo extends CrudRepository<Explainer, Long> {
-    Optional<Explainer> findById (long id);
-    Optional<Explainer> findByName (String name);
+    Optional<Explainer> findById(long id);
+
+    Optional<Explainer> findByName(String name);
 }

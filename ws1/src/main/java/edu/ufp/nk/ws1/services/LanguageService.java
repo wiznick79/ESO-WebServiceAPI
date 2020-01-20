@@ -15,12 +15,12 @@ public class LanguageService {
 
     @Autowired
     public LanguageService(LanguageRepo languageRepo) {
-        this.languageRepo=languageRepo;
+        this.languageRepo = languageRepo;
     }
 
     public Set<Language> findAll() {
         Set<Language> languages = new HashSet<>();
-        for (Language language:this.languageRepo.findAll()){
+        for (Language language : this.languageRepo.findAll()) {
             languages.add(language);
         }
         return languages;
@@ -30,22 +30,22 @@ public class LanguageService {
         return this.languageRepo.findById(id);
     }
 
-    public Optional<Language> createLanguage(Language language){
+    public Optional<Language> createLanguage(Language language) {
         Optional<Language> optionalLanguage = this.languageRepo.findByName(language.getName());
-        if (optionalLanguage.isPresent()){
+        if (optionalLanguage.isPresent()) {
             return Optional.empty();
         }
-        Language createLanguage= this.languageRepo.save(language);
+        Language createLanguage = this.languageRepo.save(language);
         return Optional.of(createLanguage);
     }
 
-    public Optional<Language> updateLanguage(Long id, Language language){
+    public Optional<Language> updateLanguage(Long id, Language language) {
         Optional<Language> optionalLanguage = this.languageRepo.findById(id);
 
-        if(this.languageRepo.findByName(language.getName()).isPresent())
+        if (this.languageRepo.findByName(language.getName()).isPresent())
             return Optional.empty();
 
-        if(optionalLanguage.isPresent()){
+        if (optionalLanguage.isPresent()) {
             optionalLanguage.get().setName(language.getName());
             this.languageRepo.save(optionalLanguage.get());
             return optionalLanguage;
@@ -54,7 +54,7 @@ public class LanguageService {
         return Optional.empty();
     }
 
-    public Optional<Language> findByName (String name) {
+    public Optional<Language> findByName(String name) {
         return this.languageRepo.findByName(name);
     }
 }

@@ -27,7 +27,7 @@ public class Availability extends BaseModel {
     private Explainer explainer;
 
     //Constructor
-    public Availability(Explainer explainer, LocalTime start, LocalTime end, LocalDate day){
+    public Availability(Explainer explainer, LocalTime start, LocalTime end, LocalDate day) {
         this.explainer = explainer;
         this.start = start;
         this.end = end;

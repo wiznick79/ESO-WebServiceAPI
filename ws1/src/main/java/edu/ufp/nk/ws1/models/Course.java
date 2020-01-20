@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -11,15 +12,15 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 public class Course extends BaseModel {
 
-	// Variables
-	private String name;
+    // Variables
+    private String name;
 
-	@OneToOne
-	private Degree degree;
+    @OneToOne
+    private Degree degree;
 
-	// Constructor
-	public Course(String name){
-		this.name = name;
-	}
+    // Constructor
+    public Course(String name) {
+        this.name = name;
+    }
 
 }

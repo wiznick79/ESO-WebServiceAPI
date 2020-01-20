@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface LanguageRepo extends CrudRepository<Language, Long> {
-    Optional<Language> findById (long id);
-    Optional<Language> findByName (String name);
+    Optional<Language> findById(long id);
+
+    Optional<Language> findByName(String name);
 }

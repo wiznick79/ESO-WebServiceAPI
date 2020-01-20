@@ -28,41 +28,41 @@ public class ExplainerService {
     private FilterExplainerService filterExplainerService;
 
     @Autowired
-    public ExplainerService (ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo, DegreeRepo degreeRepo,
-                             LanguageRepo languageRepo, FilterExplainerService filterExplainerService) {
-        this.explainerRepo=explainerRepo;
+    public ExplainerService(ExplainerRepo explainerRepo, AvailabilityRepo availabilityRepo, DegreeRepo degreeRepo,
+                            LanguageRepo languageRepo, FilterExplainerService filterExplainerService) {
+        this.explainerRepo = explainerRepo;
         this.availabilityRepo = availabilityRepo;
         this.degreeRepo = degreeRepo;
         this.languageRepo = languageRepo;
         this.filterExplainerService = filterExplainerService;
     }
 
-    public Set<Explainer> findAll(){
+    public Set<Explainer> findAll() {
         Set<Explainer> explainers = new HashSet<>();
-        for (Explainer explainer:this.explainerRepo.findAll()){
+        for (Explainer explainer : this.explainerRepo.findAll()) {
             explainers.add(explainer);
         }
         return explainers;
     }
 
-    public Optional<Explainer> createExplainer(Explainer explainer){
+    public Optional<Explainer> createExplainer(Explainer explainer) {
 
         //TODO: EXPLICADORES PODEM TER MESMO NOME TIRAR CONDIÇAO?
         Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(explainer.getName());
-        if (optionalExplainer.isPresent()){
+        if (optionalExplainer.isPresent()) {
             return Optional.empty();
         }
-        Explainer createdExplainer=this.explainerRepo.save(explainer);
+        Explainer createdExplainer = this.explainerRepo.save(explainer);
         return Optional.of(createdExplainer);
     }
 
-    public Optional<Explainer> createAvailability(Availability availability){
+    public Optional<Explainer> createAvailability(Availability availability) {
         Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(availability.getExplainer().getName());
         // TODO: MAKE ALL THE TESTS
         if (optionalExplainer.isEmpty()
                 || availability.getStart().isAfter(availability.getEnd())
                 || availability.getStart().equals(availability.getEnd())
-                || Duration.between(availability.getStart(),availability.getEnd()).toHours()<1 )
+                || Duration.between(availability.getStart(), availability.getEnd()).toHours() < 1)
             return Optional.empty();
 
         availability.setExplainer(optionalExplainer.get());
@@ -98,17 +98,15 @@ public class ExplainerService {
                 Language newLanguage = new Language(language);
                 this.languageRepo.save(newLanguage);
                 optionalExplainer.get().getLanguages().add(newLanguage);
-            }
-            else return Optional.empty();
-        }
-        else optionalExplainer.get().getLanguages().add(optionalLanguage.get());
+            } else return Optional.empty();
+        } else optionalExplainer.get().getLanguages().add(optionalLanguage.get());
 
         this.explainerRepo.save(optionalExplainer.get());
 
         return optionalExplainer;
     }
 
-    public Set<Explainer> filterExplainers(Map<String, String> query){
+    public Set<Explainer> filterExplainers(Map<String, String> query) {
         FilterExplainerObject filterExplainerObject = new FilterExplainerObject(query);
         Set<Explainer> explainers = this.findAll();
 

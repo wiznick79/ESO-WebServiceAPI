@@ -8,12 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilterExplainerByLanguageTest {
     @Test
     @VisibleForTesting
-    void filter(){
+    void filter() {
         Set<Explainer> explainers = new HashSet<>();
         Set<Language> languages = new HashSet<>();
         Set<Language> onlyEnglish = new HashSet<>();
@@ -31,7 +32,7 @@ class FilterExplainerByLanguageTest {
 
 
         FilterExplainerByLanguage filterExplainerByLanguage = new FilterExplainerByLanguage("Greek");
-        assertEquals(1,filterExplainerByLanguage.filter(explainers).size());
+        assertEquals(1, filterExplainerByLanguage.filter(explainers).size());
         FilterExplainerByLanguage filterExplainerByLanguage1 = new FilterExplainerByLanguage("English");
         assertEquals(2, filterExplainerByLanguage1.filter(explainers).size());
         FilterExplainerByLanguage filterExplainerByLanguage2 = new FilterExplainerByLanguage("Portuguese");

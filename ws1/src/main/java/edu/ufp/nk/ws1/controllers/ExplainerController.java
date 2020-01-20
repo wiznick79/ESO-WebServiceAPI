@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class ExplainerController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Explainer>> searchExplainers(@RequestParam Map<String, String> query){
+    public ResponseEntity<Iterable<Explainer>> searchExplainers(@RequestParam Map<String, String> query) {
         System.out.println(query);
         return ResponseEntity.ok(this.explainerService.filterExplainers(query));
     }
@@ -48,7 +49,7 @@ public class ExplainerController {
         this.logger.info("Received a get request");
 
         Optional<Explainer> optionalExplainer = this.explainerService.findById(id);
-        if(optionalExplainer.isPresent()){
+        if (optionalExplainer.isPresent()) {
             return ResponseEntity.ok(optionalExplainer.get());
         }
         throw new NoExplainerException();
@@ -59,39 +60,39 @@ public class ExplainerController {
         this.logger.info("Received a get request");
 
         Optional<Explainer> optionalExplainer = this.explainerService.findByName(name);
-        if(optionalExplainer.isPresent()){
+        if (optionalExplainer.isPresent()) {
             return ResponseEntity.ok(optionalExplainer.get());
         }
         throw new NoExplainerException();
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Explainer> createExplainer(@RequestBody Explainer explainer){
+    public ResponseEntity<Explainer> createExplainer(@RequestBody Explainer explainer) {
         this.logger.info("Received a post request");
 
         Optional<Explainer> explainerOptional = this.explainerService.createExplainer(explainer);
-        if (explainerOptional.isPresent()){
+        if (explainerOptional.isPresent()) {
             return ResponseEntity.ok(explainerOptional.get());
         }
         throw new ExplainerAlreadyExistsExcpetion(explainer.getName());
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Explainer> createAvailability(@RequestBody Availability availability){
+    public ResponseEntity<Explainer> createAvailability(@RequestBody Availability availability) {
         this.logger.info("Received a put request");
 
         if (this.explainerService.findByName(availability.getExplainer().getName()).isEmpty())
             throw new NoExplainerException();
 
         Optional<Explainer> explainerOptional = this.explainerService.createAvailability(availability);
-        if (explainerOptional.isPresent()){
+        if (explainerOptional.isPresent()) {
             return ResponseEntity.ok(explainerOptional.get());
         }
         throw new BadAvailabilityException();
     }
 
-    @PutMapping(value ="/{degree}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Explainer> addDegree(@PathVariable("degree") String degreeName, @RequestBody Explainer explainer){
+    @PutMapping(value = "/{degree}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Explainer> addDegree(@PathVariable("degree") String degreeName, @RequestBody Explainer explainer) {
         this.logger.info("Received a put request");
 
         if (this.explainerService.findByName(explainer.getName()).isEmpty())
@@ -101,14 +102,14 @@ public class ExplainerController {
 
         Optional<Explainer> explainerOptional = this.explainerService.addDegree(explainer, degreeName);
 
-        if (explainerOptional.isPresent()){
+        if (explainerOptional.isPresent()) {
             return ResponseEntity.ok(explainerOptional.get());
         }
 
         throw new NoExplainerException();
     }
 
-    @PostMapping(value ="/{language}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{language}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Explainer> addLanguage(@PathVariable("language") String language, @RequestBody Explainer explainer) {
         this.logger.info("Received a post request");
 
@@ -117,7 +118,7 @@ public class ExplainerController {
 
         Optional<Explainer> explainerOptional = this.explainerService.addLanguage(explainer, language);
 
-        if (explainerOptional.isPresent()){
+        if (explainerOptional.isPresent()) {
             return ResponseEntity.ok(explainerOptional.get());
         }
 
@@ -130,28 +131,28 @@ public class ExplainerController {
      * EXCEPTIONS
      */
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="No such explainer")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such explainer")
     private static class NoExplainerException extends RuntimeException {
         public NoExplainerException() {
             super("No such explainer");
         }
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Explainer already exists")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Explainer already exists")
     private static class ExplainerAlreadyExistsExcpetion extends RuntimeException {
         public ExplainerAlreadyExistsExcpetion(String name) {
-            super("An explainer with name: "+name+" already exists");
+            super("An explainer with name: " + name + " already exists");
         }
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Bad availability")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Bad availability")
     private static class BadAvailabilityException extends RuntimeException {
         public BadAvailabilityException() {
             super("Can't create this availability");
         }
     }
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="No such degree")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such degree")
     private static class NoDegreeException extends RuntimeException {
         public NoDegreeException() {
             super("No such degree");

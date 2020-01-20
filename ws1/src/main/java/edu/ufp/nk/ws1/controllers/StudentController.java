@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/student")
 public class StudentController {
 
-    private Logger logger= LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private StudentService studentService;
 
@@ -32,52 +33,52 @@ public class StudentController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Student>> getAllStudents(){
+    public ResponseEntity<Iterable<Student>> getAllStudents() {
         this.logger.info("Received a get request");
 
         return ResponseEntity.ok(this.studentService.findAll());
     }
 
     @RequestMapping(value = "/id={id}", method = RequestMethod.GET)
-    public ResponseEntity<Student> getStudentById(@PathVariable("id") long id) throws NoStudentException{
+    public ResponseEntity<Student> getStudentById(@PathVariable("id") long id) throws NoStudentException {
         this.logger.info("Received a get request");
 
-        Optional<Student> optionalStudent=this.studentService.findById(id);
-        if(optionalStudent.isPresent()){
+        Optional<Student> optionalStudent = this.studentService.findById(id);
+        if (optionalStudent.isPresent()) {
             return ResponseEntity.ok(optionalStudent.get());
         }
         throw new NoStudentException();
     }
 
     @RequestMapping(value = "/number={number}", method = RequestMethod.GET)
-    public ResponseEntity<Student> getStudentByStudentNumber(@PathVariable("number") int number) throws NoStudentException{
+    public ResponseEntity<Student> getStudentByStudentNumber(@PathVariable("number") int number) throws NoStudentException {
         this.logger.info("Received a get request");
 
-        Optional<Student> optionalStudent=this.studentService.findByNumber(number);
-        if(optionalStudent.isPresent()){
+        Optional<Student> optionalStudent = this.studentService.findByNumber(number);
+        if (optionalStudent.isPresent()) {
             return ResponseEntity.ok(optionalStudent.get());
         }
         throw new NoStudentException();
     }
 
     @RequestMapping(value = "/name={name}", method = RequestMethod.GET)
-    public ResponseEntity<Student> getStudentByName(@PathVariable("name") String name) throws NoStudentException{
+    public ResponseEntity<Student> getStudentByName(@PathVariable("name") String name) throws NoStudentException {
         this.logger.info("Received a get request");
 
-        Optional<Student> optionalStudent=this.studentService.findByName(name);
-        if(optionalStudent.isPresent()){
+        Optional<Student> optionalStudent = this.studentService.findByName(name);
+        if (optionalStudent.isPresent()) {
             return ResponseEntity.ok(optionalStudent.get());
         }
         throw new NoStudentException();
     }
 
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         this.logger.info("Received a post request");
 
         Optional<Student> studentOptional = this.studentService.createStudent(student);
-        if (studentOptional.isPresent()){
+        if (studentOptional.isPresent()) {
             return ResponseEntity.ok(studentOptional.get());
         }
         throw new StudentAlreadyExistsException(student.getStudentNumber());
@@ -87,17 +88,17 @@ public class StudentController {
      * EXCEPTIONS
      */
 
-    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such student")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such student")
     private static class NoStudentException extends RuntimeException {
         public NoStudentException() {
             super("No such student");
         }
     }
 
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Student already exists")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Student already exists")
     private static class StudentAlreadyExistsException extends RuntimeException {
         public StudentAlreadyExistsException(int number) {
-            super("A student with number: "+number+" already exists");
+            super("A student with number: " + number + " already exists");
         }
     }
 }

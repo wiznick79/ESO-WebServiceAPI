@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
@@ -53,14 +54,24 @@ public class AppointmentController {
         this.logger.info("Received a get request");
 
         Optional<Appointment> optionalAppointment = this.appointmentService.findById(id);
-        if (optionalAppointment.isPresent()){
+        if (optionalAppointment.isPresent()) {
             return ResponseEntity.ok(optionalAppointment.get());
         }
-        throw new NoAppointmentException(id);
+        throw new NoAppointmentException();
+    }
+
+    @RequestMapping(value = "/date={date}", method = RequestMethod.GET)
+    public ResponseEntity<Appointment> getAppointmentByDate(@PathVariable("date") LocalDate date) throws NoAppointmentException{
+        this.logger.info("Received a get request");
+        Optional<Appointment> optionalAppointment = this.appointmentService.findByDate(date);
+        if (optionalAppointment.isPresent()) {
+            return ResponseEntity.ok(optionalAppointment.get());
+        }
+        throw new NoAppointmentException();
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment){
+    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
         this.logger.info("Received a post request");
 
         Optional<Student> optionalStudent = this.studentService.findByName(appointment.getStudent().getName());
@@ -74,8 +85,7 @@ public class AppointmentController {
         if (appointmentOptional.isPresent()) {
             return ResponseEntity.ok(appointmentOptional.get());
         }
-
-        throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(),appointment.getDate());
+        throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(), appointment.getDate());
     }
 
     /*
@@ -84,15 +94,15 @@ public class AppointmentController {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such appointment")
     private static class NoAppointmentException extends RuntimeException {
-        public NoAppointmentException(Long id) {
-            super("No such appointment with id: " + id);
+        public NoAppointmentException() {
+            super("No such appointment");
         }
     }
 
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Appointment already exists")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Appointment already exists")
     private static class AppointmentAlreadyExistsException extends RuntimeException {
         public AppointmentAlreadyExistsException(LocalTime time, LocalDate date) {
-            super("An appointment on date: "+date+" "+time+" already exists");
+            super("An appointment on date: " + date + " " + time + " already exists");
         }
     }
 
