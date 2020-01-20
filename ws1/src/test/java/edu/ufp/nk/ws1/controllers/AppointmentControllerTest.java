@@ -145,7 +145,7 @@ public class AppointmentControllerTest {
         student.setId(1L);
         LocalDate d1 = LocalDate.of(1998,12,1);
         LocalTime t1 = LocalTime.of(20,2);
-        Explainer explainer = new Explainer("Ni2kos Perris");
+        Explainer explainer = new Explainer("Nikos Perris");
         Appointment appointment = new Appointment(d1, t1, student, explainer);
         appointment.setDate(d1);
         System.out.println(appointment.getDate());
@@ -165,11 +165,10 @@ public class AppointmentControllerTest {
         assertEquals(appointment, responseAppointment);
 
         this.mockMvc.perform(
-                get("/appointment/date=2")
+                get("/appointment/date=2000-01-01")
         ).andExpect(
                 status().isNotFound()
         );
-        //TODO:https://stackoverflow.com/questions/40274353/how-to-use-localdatetime-requestparam-in-spring-i-get-failed-to-convert-string/40276418
         //TODO:FIND BY START AND DATE
     }
 
