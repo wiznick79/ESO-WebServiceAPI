@@ -52,7 +52,7 @@ public class CourseControllerTest {
         degree.setId(1L);
         college.setId(1L);
         collegeService.createCollege(college);
-        when(degreeService.createDegreeByCollege(degree,1L)).thenReturn(Optional.of(degree));
+        when(degreeService.createDegreeByCollege(degree, 1L)).thenReturn(Optional.of(degree));
 
 
         String jsonRequest = this.objectMapper.writeValueAsString(course);
@@ -66,16 +66,16 @@ public class CourseControllerTest {
         Course responseCourse = this.objectMapper.readValue(response, Course.class);
         assertEquals(responseCourse, course);
 
-       /*//Existing Course
+       //Existing Course
         Course course1 = new Course("Multimedia");
-        String jsonExistingCourse = this.objectMapper.writeValueAsString(course1);
         when(courseService.createCourseByDegree(course1, 1L)).thenReturn(Optional.empty());
+        String jsonExistingCourse = this.objectMapper.writeValueAsString(course1);
         this.mockMvc.perform(
                 post("/course/1").contentType(MediaType.APPLICATION_JSON).content(jsonExistingCourse)
         ).andExpect(
                 status().isNotFound()
-        );*/
-                //TODO:................
+        );
+        //TODO:................
 
         //Non Existing Degree
         Course courseN = new Course("Multimedia");
@@ -94,7 +94,7 @@ public class CourseControllerTest {
 
     @Test
     @VisibleForTesting
-    void getAllCourses() throws Exception{
+    void getAllCourses() throws Exception {
         Set<Course> courses = new HashSet<>();
         courses.add(new Course("Base de Dados"));
         courses.add(new Course("Engenharia de Software"));
@@ -107,7 +107,8 @@ public class CourseControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        Set<Course> results=this.objectMapper.readValue(responseGetAllCourses,new TypeReference<Set<Course>>(){});
+        Set<Course> results = this.objectMapper.readValue(responseGetAllCourses, new TypeReference<Set<Course>>() {
+        });
 
         assertTrue(results.containsAll(courses));
     }

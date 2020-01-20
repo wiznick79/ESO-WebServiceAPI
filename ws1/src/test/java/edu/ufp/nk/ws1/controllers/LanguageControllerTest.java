@@ -11,9 +11,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -36,9 +38,9 @@ public class LanguageControllerTest {
 
     @Test
     @VisibleForTesting
-    void createLanguage() throws Exception{
+    void createLanguage() throws Exception {
         Language language = new Language("German");
-        String jsonRequest=this.objectMapper.writeValueAsString(language);
+        String jsonRequest = this.objectMapper.writeValueAsString(language);
         when(languageService.createLanguage(language)).thenReturn(Optional.of(language));
 
 
@@ -69,13 +71,13 @@ public class LanguageControllerTest {
 
     @Test
     @VisibleForTesting
-    void getLanguageById() throws Exception{
+    void getLanguageById() throws Exception {
         Language language = new Language("German");
         language.setId(1L);
 
         when(this.languageService.findById(1l)).thenReturn(Optional.of(language));
 
-        String responseJson=this.mockMvc.perform(
+        String responseJson = this.mockMvc.perform(
                 get("/language/id=1")
         ).andExpect(
                 status().isOk()

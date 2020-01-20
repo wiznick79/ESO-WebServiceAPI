@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+
 import java.util.Optional;
 
 @Controller
@@ -43,7 +44,7 @@ public class LanguageController {
         this.logger.info("Received a get request");
 
         Optional<Language> optionalLanguage = this.languageService.findById(id);
-        if (optionalLanguage.isPresent()){
+        if (optionalLanguage.isPresent()) {
             return ResponseEntity.ok(optionalLanguage.get());
         }
         throw new NoLanguageException(id);
@@ -51,27 +52,27 @@ public class LanguageController {
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Language> createLanguage(@RequestBody Language language){
+    public ResponseEntity<Language> createLanguage(@RequestBody Language language) {
         this.logger.info("Received a post request");
 
         Optional<Language> languageOptional = this.languageService.createLanguage(language);
-        if(languageOptional.isPresent()) {
+        if (languageOptional.isPresent()) {
             return ResponseEntity.ok(languageOptional.get());
         }
         throw new LanguageAlreadyExistsException(language.getName());
     }
 
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Language> editLanguage(@PathVariable("id") long id, @RequestBody Language language){
+    /*@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Language> editLanguage(@PathVariable("id") long id, @RequestBody Language language) {
         this.logger.info("Received a put request");
 
         Optional<Language> languageOptional = this.languageService.updateLanguage(id, language);
 
-        if(languageOptional.isPresent()) {
+        if (languageOptional.isPresent()) {
             return ResponseEntity.ok(languageOptional.get());
         }
         throw new LanguageAlreadyExistsException(language.getName());
-    }
+    }*/
 
     /*
      * EXCEPTIONS
@@ -84,10 +85,10 @@ public class LanguageController {
         }
     }
 
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Language already exists")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Language already exists")
     private static class LanguageAlreadyExistsException extends RuntimeException {
         public LanguageAlreadyExistsException(String name) {
-            super("A language with name: "+name+" already exists");
+            super("A language with name: " + name + " already exists");
         }
     }
 }

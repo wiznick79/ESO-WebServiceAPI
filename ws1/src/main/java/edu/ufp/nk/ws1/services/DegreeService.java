@@ -18,13 +18,13 @@ public class DegreeService {
 
     @Autowired
     public DegreeService(DegreeRepo degreeRepo, CollegeRepo collegeRepo) {
-        this.degreeRepo=degreeRepo;
+        this.degreeRepo = degreeRepo;
         this.collegeRepo = collegeRepo;
     }
 
     public Set<Degree> findAll() {
         Set<Degree> degrees = new HashSet<>();
-        for (Degree degree:this.degreeRepo.findAll()){
+        for (Degree degree : this.degreeRepo.findAll()) {
             degrees.add(degree);
         }
         return degrees;
@@ -45,14 +45,13 @@ public class DegreeService {
 
         if (optionalCollege.isPresent()) {
             degree.setCollege(optionalCollege.get());
-        }
-        else return Optional.empty();
+        } else return Optional.empty();
 
         Degree createDegree = this.degreeRepo.save(degree);
         return Optional.of(createDegree);
     }
 
-    public Optional<Degree> findByName (String name) {
+    public Optional<Degree> findByName(String name) {
         return this.degreeRepo.findByName(name);
     }
 }

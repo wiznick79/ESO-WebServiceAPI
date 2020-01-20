@@ -3,6 +3,7 @@ package edu.ufp.nk.ws1.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -33,7 +34,9 @@ public class Explainer extends BaseModel {
 */
 
     //Constructor
-    public Explainer (String name) { this.name = name; }
+    public Explainer(String name) {
+        this.name = name;
+    }
 
 
 }

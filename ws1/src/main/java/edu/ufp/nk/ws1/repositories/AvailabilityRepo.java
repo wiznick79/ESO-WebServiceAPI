@@ -10,7 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface AvailabilityRepo extends CrudRepository<Availability, Long> {
-    Optional<Availability> findById (long id);
-    Optional<Availability> findByDayAndStart (LocalDate day, LocalTime start);
+    Optional<Availability> findById(long id);
+
+    Optional<Availability> findByDayAndStart(LocalDate day, LocalTime start);
 
 }

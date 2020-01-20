@@ -18,99 +18,102 @@ import javax.transaction.Transactional;
 @Component
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-	private DegreeRepo degreeRepo;
-	private CourseRepo courseRepo;
-	private StudentRepo studentRepo;
-	private CollegeRepo collegeRepo;
+    private DegreeRepo degreeRepo;
+    private CourseRepo courseRepo;
+    private StudentRepo studentRepo;
+    private CollegeRepo collegeRepo;
 
 
-	public Bootstrap(DegreeRepo degreeRepo, CourseRepo courseRepo, StudentRepo studentRepo, CollegeRepo collegeRepo) {
-		this.setDegreeRepo(degreeRepo);
-		this.setCourseRepo(courseRepo);
-		this.setStudentRepo(studentRepo);
-		this.setCollegeRepo(collegeRepo);
-	}
+    public Bootstrap(DegreeRepo degreeRepo, CourseRepo courseRepo, StudentRepo studentRepo, CollegeRepo collegeRepo) {
+        this.setDegreeRepo(degreeRepo);
+        this.setCourseRepo(courseRepo);
+        this.setStudentRepo(studentRepo);
+        this.setCollegeRepo(collegeRepo);
+    }
 
-	@Override
-	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-		loadData();
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        loadData();
 
-	}
+    }
 
-	// Testing data
-	public void loadData(){
-		Degree enfermagem = new Degree("Enfermagem");
-		Degree engCivil = new Degree("Engenharia Civil");
-		Degree engInfo = new Degree("Engenharia Informática");
-		Degree psicologia = new Degree("Psicologia");
+    // Testing data
+    public void loadData() {
+        Degree enfermagem = new Degree("Enfermagem");
+        Degree engCivil = new Degree("Engenharia Civil");
+        Degree engInfo = new Degree("Engenharia Informática");
+        Degree psicologia = new Degree("Psicologia");
 
-		Course c1 = new Course("Laboratorio de Programação");
-		Course c2 = new Course("Redes de Computadores I");
-		Course c3 = new Course("Base de Dados I");
-		Course c4 = new Course("Multimédia I");
+        Course c1 = new Course("Laboratorio de Programação");
+        Course c2 = new Course("Redes de Computadores I");
+        Course c3 = new Course("Base de Dados I");
+        Course c4 = new Course("Multimédia I");
 
-		Student s1 = new Student("Alvaro Magalhães", 37000);
-		Student s2 = new Student("Pedro Alves", 123124);
+        Student s1 = new Student("Alvaro Magalhães", 37000);
+        Student s2 = new Student("Pedro Alves", 123124);
 
-		College cl1 = new College("Faculdade Ciencias");
-		College cl2 = new College("Faculdade de saude");
-
-
-		enfermagem.setCollege(cl2);
-		engCivil.setCollege(cl1);
-		engInfo.setCollege(cl1);
-
-		c1.setDegree(engInfo);
-		c2.setDegree(engCivil);
-		c3.setDegree(psicologia);
-		c4.setDegree(enfermagem);
-
-		this.getDegreeRepo().save(enfermagem);
-		this.getDegreeRepo().save(engCivil);
-		this.getDegreeRepo().save(engInfo);
-		this.getDegreeRepo().save(psicologia);
-
-		this.getCourseRepo().save(c1);
-		this.getCourseRepo().save(c2);
-		this.getCourseRepo().save(c3);
-		this.getCourseRepo().save(c4);
-
-		this.getStudentRepo().save(s1);
-		this.getStudentRepo().save(s2);
-
-		this.getCollegeRepo().save(cl1);
-		this.getCollegeRepo().save(cl2);
-
-	}
+        College cl1 = new College("Faculdade Ciencias");
+        College cl2 = new College("Faculdade de saude");
 
 
-	// Gets & Sets
-	public DegreeRepo getDegreeRepo() {
-		return this.degreeRepo;
-	}
-	public void setDegreeRepo(DegreeRepo degreeRepo) {
-		this.degreeRepo = degreeRepo;
-	}
+        enfermagem.setCollege(cl2);
+        engCivil.setCollege(cl1);
+        engInfo.setCollege(cl1);
 
-	public CourseRepo getCourseRepo() {
-		return this.courseRepo;
-	}
-	public void setCourseRepo(CourseRepo courseRepo) {
-		this.courseRepo = courseRepo;
-	}
+        c1.setDegree(engInfo);
+        c2.setDegree(engCivil);
+        c3.setDegree(psicologia);
+        c4.setDegree(enfermagem);
 
-	public StudentRepo getStudentRepo() {
-		return this.studentRepo;
-	}
-	public void setStudentRepo(StudentRepo studentRepo) {
-		this.studentRepo = studentRepo;
-	}
+        this.getDegreeRepo().save(enfermagem);
+        this.getDegreeRepo().save(engCivil);
+        this.getDegreeRepo().save(engInfo);
+        this.getDegreeRepo().save(psicologia);
 
-	public CollegeRepo getCollegeRepo() {
-		return collegeRepo;
-	}
+        this.getCourseRepo().save(c1);
+        this.getCourseRepo().save(c2);
+        this.getCourseRepo().save(c3);
+        this.getCourseRepo().save(c4);
 
-	public void setCollegeRepo(CollegeRepo collegeRepo) {
-		this.collegeRepo = collegeRepo;
-	}
+        this.getStudentRepo().save(s1);
+        this.getStudentRepo().save(s2);
+
+        this.getCollegeRepo().save(cl1);
+        this.getCollegeRepo().save(cl2);
+
+    }
+
+
+    // Gets & Sets
+    public DegreeRepo getDegreeRepo() {
+        return this.degreeRepo;
+    }
+
+    public void setDegreeRepo(DegreeRepo degreeRepo) {
+        this.degreeRepo = degreeRepo;
+    }
+
+    public CourseRepo getCourseRepo() {
+        return this.courseRepo;
+    }
+
+    public void setCourseRepo(CourseRepo courseRepo) {
+        this.courseRepo = courseRepo;
+    }
+
+    public StudentRepo getStudentRepo() {
+        return this.studentRepo;
+    }
+
+    public void setStudentRepo(StudentRepo studentRepo) {
+        this.studentRepo = studentRepo;
+    }
+
+    public CollegeRepo getCollegeRepo() {
+        return collegeRepo;
+    }
+
+    public void setCollegeRepo(CollegeRepo collegeRepo) {
+        this.collegeRepo = collegeRepo;
+    }
 }

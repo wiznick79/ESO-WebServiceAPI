@@ -2,6 +2,7 @@ package edu.ufp.nk.ws1.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -15,7 +16,7 @@ public class Student extends BaseModel {
     private int studentNumber;
 
     //Constructor
-    public Student(String name, int studentNumber){
+    public Student(String name, int studentNumber) {
         this.name = name;
         this.studentNumber = studentNumber;
     }

@@ -17,13 +17,13 @@ public class AvailabilityService {
 
     @Autowired
     public AvailabilityService(AvailabilityRepo availabilityRepo) {
-        this.availabilityRepo=availabilityRepo;
+        this.availabilityRepo = availabilityRepo;
 
     }
 
     public Set<Availability> findAll() {
         Set<Availability> availabilities = new HashSet<>();
-        for (Availability availability:this.availabilityRepo.findAll()){
+        for (Availability availability : this.availabilityRepo.findAll()) {
             availabilities.add(availability);
         }
         return availabilities;
@@ -34,16 +34,16 @@ public class AvailabilityService {
     }
 
     public Optional<Availability> createAvailability(Availability availability) {
-        Optional<Availability> optionalAvailability = this.availabilityRepo.findByDayAndStart(availability.getDay() , availability.getStart());
+        Optional<Availability> optionalAvailability = this.availabilityRepo.findByDayAndStart(availability.getDay(), availability.getStart());
 
-        if (optionalAvailability.isPresent()){
+        if (optionalAvailability.isPresent()) {
             return Optional.empty();
         }
         Availability createAvailability = this.availabilityRepo.save(availability);
         return Optional.of(createAvailability);
     }
 
-    public Optional<Availability> findByDayOfWeekAndStart (LocalDate day, LocalTime start) {
+    public Optional<Availability> findByDayOfWeekAndStart(LocalDate day, LocalTime start) {
         return this.availabilityRepo.findByDayAndStart(day, start);
     }
 }

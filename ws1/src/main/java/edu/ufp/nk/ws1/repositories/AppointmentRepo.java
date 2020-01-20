@@ -10,7 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepo extends CrudRepository<Appointment, Long> {
-    Optional<Appointment> findById (long id);
-    Optional<Appointment> findByDate (LocalDate date);
-    Optional<Appointment> findByStartAndDate (LocalTime time, LocalDate date);
+    Optional<Appointment> findById(long id);
+
+    Optional<Appointment> findByDate(LocalDate date);
+
+    Optional<Appointment> findByStartAndDate(LocalTime time, LocalDate date);
 }

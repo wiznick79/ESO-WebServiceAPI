@@ -15,14 +15,14 @@ public class CollegeService {
     private CollegeRepo collegeRepo;
 
     @Autowired
-    public CollegeService(CollegeRepo collegeRepo){
+    public CollegeService(CollegeRepo collegeRepo) {
 
         this.collegeRepo = collegeRepo;
     }
 
     public Set<College> findAll() {
-        Set<College> colleges=new HashSet<>();
-        for(College college:this.collegeRepo.findAll()){
+        Set<College> colleges = new HashSet<>();
+        for (College college : this.collegeRepo.findAll()) {
             colleges.add(college);
         }
         return colleges;
@@ -36,12 +36,12 @@ public class CollegeService {
         return this.collegeRepo.findById(id);
     }
 
-    public Optional<College> createCollege (College college) {
+    public Optional<College> createCollege(College college) {
         Optional<College> optionalCollege = this.collegeRepo.findByName(college.getName());
-        if(optionalCollege.isPresent()){
+        if (optionalCollege.isPresent()) {
             return Optional.empty();
         }
-        College createdCollege=this.collegeRepo.save(college);
+        College createdCollege = this.collegeRepo.save(college);
         return Optional.of(createdCollege);
     }
 }

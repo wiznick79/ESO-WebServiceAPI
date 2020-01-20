@@ -13,11 +13,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -39,17 +41,17 @@ public class AvailabilityControllerTest {
 
     @Test
     @VisibleForTesting
-    void getAvailabilityById() throws Exception{
+    void getAvailabilityById() throws Exception {
         Explainer explainer = new Explainer("Nikolaos Perris");
-        LocalDate d1 = LocalDate.of(1998,12,1);
-        LocalTime t1 = LocalTime.of(14,1);
-        LocalTime t2 = LocalTime.of(20,0);
-        Availability availability = new Availability(explainer,t1,t2,d1);
+        LocalDate d1 = LocalDate.of(1998, 12, 1);
+        LocalTime t1 = LocalTime.of(14, 1);
+        LocalTime t2 = LocalTime.of(20, 0);
+        Availability availability = new Availability(explainer, t1, t2, d1);
         availability.setId(1L);
 
         when(this.availabilityService.findById(1L)).thenReturn(Optional.of(availability));
 
-        String responseJson=this.mockMvc.perform(
+        String responseJson = this.mockMvc.perform(
                 get("/availability/id=1")
         ).andExpect(
                 status().isOk()
@@ -58,7 +60,7 @@ public class AvailabilityControllerTest {
 
         Availability responseAvailability = this.objectMapper.readValue(responseJson, Availability.class);
 
-        this.objectMapper.readValue(responseJson,Appointment.class);
+        this.objectMapper.readValue(responseJson, Appointment.class);
         assertEquals(availability, responseAvailability);
 
 
@@ -72,15 +74,15 @@ public class AvailabilityControllerTest {
 
     @Test
     @VisibleForTesting
-    void getAllAvailabilities() throws Exception{
+    void getAllAvailabilities() throws Exception {
         Explainer explainer = new Explainer("Nikos Perris");
         Set<Availability> availabilities = new HashSet<>();
         LocalDate d1 = LocalDate.now();
         LocalTime t1 = LocalTime.now();
-        LocalTime t2 = LocalTime.of(23,0);
-        availabilities.add(new Availability(explainer,t1,t2,d1));
-        availabilities.add(new Availability(explainer,t1,t2,d1));
-        availabilities.add(new Availability(explainer,t1,t2,d1));
+        LocalTime t2 = LocalTime.of(23, 0);
+        availabilities.add(new Availability(explainer, t1, t2, d1));
+        availabilities.add(new Availability(explainer, t1, t2, d1));
+        availabilities.add(new Availability(explainer, t1, t2, d1));
 
         when(this.availabilityService.findAll()).thenReturn(availabilities);
 
@@ -89,7 +91,8 @@ public class AvailabilityControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        Set<Availability> results=this.objectMapper.readValue(responseGetAllAvailabilities,new TypeReference<Set<Availability>>(){});
+        Set<Availability> results = this.objectMapper.readValue(responseGetAllAvailabilities, new TypeReference<Set<Availability>>() {
+        });
 
         assertTrue(results.containsAll(availabilities));
     }
@@ -97,12 +100,12 @@ public class AvailabilityControllerTest {
 
     @Test
     @VisibleForTesting
-    void createAvailability() throws Exception{
+    void createAvailability() throws Exception {
         Explainer explainer = new Explainer("Nikos Perris");
         LocalDate d1 = LocalDate.now();
         LocalTime t1 = LocalTime.now();
-        LocalTime t2 = LocalTime.of(23,0);
-        Availability availability = new Availability(explainer,t1,t2,d1);
+        LocalTime t2 = LocalTime.of(23, 0);
+        Availability availability = new Availability(explainer, t1, t2, d1);
 
         String jsonRequest = this.objectMapper.writeValueAsString(availability);
         when(this.availabilityService.createAvailability(availability)).thenReturn(Optional.of(availability));
@@ -113,10 +116,18 @@ public class AvailabilityControllerTest {
                 status().isOk()
         ).andReturn().getResponse().getContentAsString();
 
-        Availability  responseAvailability = this.objectMapper.readValue(response, Availability.class);
+        Availability responseAvailability = this.objectMapper.readValue(response, Availability.class);
         assertEquals(responseAvailability, availability);
 
 
+        Availability existingAvailability = new Availability(explainer, t1, t2, d1);
+        String existingAvailabilityJson = this.objectMapper.writeValueAsString(existingAvailability);
+        when(this.availabilityService.createAvailability(existingAvailability)).thenReturn(Optional.empty());
+        this.mockMvc.perform(
+                post("/availability").contentType(MediaType.APPLICATION_JSON).content(existingAvailabilityJson)
+        ).andExpect(
+                status().isBadRequest()
+        );
 
     }
 }

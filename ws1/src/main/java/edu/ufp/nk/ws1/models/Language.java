@@ -13,8 +13,8 @@ public class Language extends BaseModel {
     private String name;
 
     //Constructor
-    public Language(String name){
-        this.name=name;
+    public Language(String name) {
+        this.name = name;
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -38,14 +39,14 @@ public class CollegeControllerTest {
 
     @Test
     @VisibleForTesting
-    void createCollege() throws Exception{
+    void createCollege() throws Exception {
         College college = new College("UFP");
 
-        String jsonRequest=this.objectMapper.writeValueAsString(college);
+        String jsonRequest = this.objectMapper.writeValueAsString(college);
 
         when(collegeService.createCollege(college)).thenReturn(Optional.of(college));
 
-        String responseJson=this.mockMvc.perform(
+        String responseJson = this.mockMvc.perform(
                 post("/college").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
@@ -69,7 +70,7 @@ public class CollegeControllerTest {
 
     @Test
     @VisibleForTesting
-    void getAllColleges() throws Exception{
+    void getAllColleges() throws Exception {
         Set<College> colleges = new HashSet<>();
         colleges.add(new College("Saude"));
         colleges.add(new College("Ciencas"));
@@ -82,20 +83,21 @@ public class CollegeControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        Set<College> results=this.objectMapper.readValue(responseGetAllCollege,new TypeReference<Set<College>>(){});
+        Set<College> results = this.objectMapper.readValue(responseGetAllCollege, new TypeReference<Set<College>>() {
+        });
 
         assertTrue(results.containsAll(colleges));
     }
 
     @Test
     @VisibleForTesting
-    void getCollegeById() throws Exception{
+    void getCollegeById() throws Exception {
         College college = new College("UFP");
         college.setId(1L);
 
         when(this.collegeService.findById(1l)).thenReturn(Optional.of(college));
 
-        String responseJson=this.mockMvc.perform(
+        String responseJson = this.mockMvc.perform(
                 get("/college/id=1")
         ).andExpect(
                 status().isOk()
@@ -106,7 +108,7 @@ public class CollegeControllerTest {
         assertEquals(college, responseCollege);
 
         this.mockMvc.perform(
-                get("/student/id=2")
+                get("/college/id=2")
         ).andExpect(
                 status().isNotFound()
         );

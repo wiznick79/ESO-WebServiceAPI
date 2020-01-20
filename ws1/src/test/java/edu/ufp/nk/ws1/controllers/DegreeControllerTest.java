@@ -51,7 +51,7 @@ public class DegreeControllerTest {
 
         when(degreeService.createDegreeByCollege(degree, 1L)).thenReturn(Optional.of(degree));
 
-        String response =this.mockMvc.perform(
+        String response = this.mockMvc.perform(
                 post("/degree/1").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
                 status().isOk()
@@ -63,8 +63,8 @@ public class DegreeControllerTest {
 
         //Existing Degree
         Degree existingDegree = new Degree("Eng Infomartica");
-        String existingDegreeJson = this.objectMapper.writeValueAsString(existingDegree);
         when(this.degreeService.createDegreeByCollege(existingDegree, 1L)).thenReturn(Optional.empty());
+        String existingDegreeJson = this.objectMapper.writeValueAsString(existingDegree);
         this.mockMvc.perform(
                 post("/degree/1").contentType(MediaType.APPLICATION_JSON).content(existingDegreeJson)
         ).andExpect(

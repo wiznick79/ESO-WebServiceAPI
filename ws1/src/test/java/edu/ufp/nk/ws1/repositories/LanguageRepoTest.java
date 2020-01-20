@@ -5,6 +5,7 @@ import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -14,12 +15,12 @@ public class LanguageRepoTest {
 
     @Test
     @VisibleForTesting
-    void test(){
+    void test() {
         Language language = new Language("Portuguese");
         Language language1 = new Language("Greek");
         this.languageRepo.save(language);
-        assertEquals(1,languageRepo.count());
+        assertEquals(1, languageRepo.count());
         this.languageRepo.save(language1);
-        assertEquals(2,languageRepo.count());
+        assertEquals(2, languageRepo.count());
     }
 }
