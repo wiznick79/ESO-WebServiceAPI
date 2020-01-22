@@ -8,9 +8,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class RequestController {
+
     @GetMapping(value = "test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    Iterable getAll(){
+    public @ResponseBody Iterable getAll(){
         String path = "http://localhost:8081/";
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> nullBodyRequest = new HttpEntity<>(null, headers);

@@ -53,7 +53,6 @@ public class UniversityController {
             universityService.createUniversity(university);
         }
         return universityService.getAllUniversities();
-        //TODO: VERIFY THIS FUNCTION
     }
 
 
