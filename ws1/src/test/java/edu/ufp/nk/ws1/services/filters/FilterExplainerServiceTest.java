@@ -8,7 +8,6 @@ import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerObject;
 import edu.ufp.nk.ws1.services.filters.explainer.FilterExplainerService;
 import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
