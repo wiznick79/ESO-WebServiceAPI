@@ -35,5 +35,5 @@ public class Explainer extends BaseModel{
     private University university;
 
 
-    public Explainer(String name){this.name=name;}
+    public Explainer(String name){ this.name=name; }
 }
