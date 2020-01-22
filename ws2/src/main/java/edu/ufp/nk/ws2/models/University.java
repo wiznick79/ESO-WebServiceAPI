@@ -25,8 +25,10 @@ public class University extends BaseModel{
     @JsonManagedReference
     private Set<Explainer> explainers = new HashSet<>();
 
-
-
+    public void addExplainer(Explainer explainer){
+        this.explainers.add(explainer);
+        explainer.setUniversity(this);
+    }
 
     public void addCollege(College college){
         this.colleges.add(college);

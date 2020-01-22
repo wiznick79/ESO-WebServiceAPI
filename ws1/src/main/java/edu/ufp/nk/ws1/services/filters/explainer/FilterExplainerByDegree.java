@@ -24,7 +24,7 @@ public class FilterExplainerByDegree implements FilterI<Explainer> {
         // TODO: Fix this. Missing Explainer Courses? Degrees?
         Set<Explainer> explainers = new HashSet<>();
         for (Explainer e : data) {
-            if (e.getDegree().getName().equalsIgnoreCase(this.degree)) {
+            if (e.getDegree()!=null && e.getDegree().getName().equalsIgnoreCase(this.degree)) {
                 explainers.add(e);
             }
         }

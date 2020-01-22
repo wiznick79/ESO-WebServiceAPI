@@ -54,7 +54,12 @@ public class ExplainerController {
     }
 
 
-
+    @RequestMapping(value="", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Iterable<Explainer>> getAllExplainers(){
+        this.logger.info("Received GET Request");
+        Iterable<Explainer> explainer = explainerService.getAllExplainers();
+        return ResponseEntity.ok(explainer);
+    }
 
     private ResponseEntity makeRequest(String path, HttpMethod method, HttpEntity request, Class responseType) {
         RestTemplate restTemplate = new RestTemplate();

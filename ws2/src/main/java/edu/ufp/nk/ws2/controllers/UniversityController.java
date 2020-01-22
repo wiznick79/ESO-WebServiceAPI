@@ -33,19 +33,20 @@ public class UniversityController {
 
     @RequestMapping(value = "", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<University>> getAllUniversities(){
-        this.logger.info("GET");
+        this.logger.info("Received GET request");
         Iterable<University> universities = universityService.getAllUniversities();
         return ResponseEntity.ok(universities);
     }
 
     @GetMapping(value = "/college")
     public Iterable<University> getAllCollegesOfUniversity(){
+        this.logger.info("Received GET request");
         for (University university: universityService.getAllUniversities()){
             String path = university.getIp().concat("college");
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<String> nullBody = new HttpEntity<>(null,headers);
-            ResponseEntity<College[]> responseEntity= makeRequest(path,HttpMethod.GET,nullBody,College[].class);
-            this.logger.info("Get Request");
+            ResponseEntity<College[]> responseEntity = makeRequest(path,HttpMethod.GET,nullBody,College[].class);
+            this.logger.info("Send GET Request to "+university.getName());
 
             for (College college: responseEntity.getBody()){
                 university.addCollege(college);
