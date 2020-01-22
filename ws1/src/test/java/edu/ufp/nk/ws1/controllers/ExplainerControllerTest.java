@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.nk.ws1.models.College;
 import edu.ufp.nk.ws1.models.Degree;
 import edu.ufp.nk.ws1.models.Explainer;
+import edu.ufp.nk.ws1.models.Language;
+import edu.ufp.nk.ws1.services.CollegeService;
 import edu.ufp.nk.ws1.services.DegreeService;
 import edu.ufp.nk.ws1.services.ExplainerService;
+import edu.ufp.nk.ws1.services.LanguageService;
 import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +20,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
+import java.util.Optional;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,6 +44,10 @@ public class ExplainerControllerTest {
     private ExplainerService explainerService;
     @MockBean
     private DegreeService degreeService;
+    @MockBean
+    private CollegeService collegeService;
+    @MockBean
+    private LanguageService languageService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -153,15 +163,81 @@ public class ExplainerControllerTest {
     @VisibleForTesting
     void updateExplainer() throws Exception {
         Explainer explainer = new Explainer("Nikos Perris");
+        Degree degree = new Degree("Enfermagem");
+        College college = new College("Saude");
+        when(this.collegeService.createCollege(college)).thenReturn(Optional.of(college));
+        when(this.degreeService.createDegreeByCollege(degree,college.getId())).thenReturn(Optional.of(degree));
         when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
 
         String result = this.mockMvc.perform(MockMvcRequestBuilders
                 .put("/explainer/Enfermagem")
-                .content(explainer.getName()).contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Nikos Perris\"}").contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(
                 status().isOk()
         ).andExpect(MockMvcResultMatchers.jsonPath("$.degree").value("Enfermagem")).toString();
         //TODO: see how to perform a put
         assertEquals(result, explainer);
     }
+
+    @Test
+    @VisibleForTesting
+    void setExplainerService() throws Exception{
+        Explainer explainer = new Explainer("Nikos Perris");
+        Explainer explainer1 = new Explainer("Pedro Alves");
+        Set<Explainer> explainers = new HashSet<>();
+        explainers.add(explainer);
+        explainers.add(explainer1);
+        Map<String, String> query = new HashMap<>();
+        when(this.explainerService.filterExplainers(query)).thenReturn(explainers);
+        assertNotNull(explainers);
+    }
+
+    @Test
+    @VisibleForTesting
+    void updateExplainerForAvailability() throws Exception {
+        Explainer explainer = new Explainer("Nikos Perris");
+        Degree degree = new Degree("Enfermagem");
+        College college = new College("Saude");
+        when(this.collegeService.createCollege(college)).thenReturn(Optional.of(college));
+        when(this.degreeService.createDegreeByCollege(degree,college.getId())).thenReturn(Optional.of(degree));
+        when(this.explainerService.findByName("Nikos Perris")).thenReturn(Optional.of(explainer));
+
+        String result = this.mockMvc.perform(MockMvcRequestBuilders
+                .put("/explainer/")
+                .content("{\"explainer\" : {\"name\" : \"Nikos Perris\"},\"start\" : \"15:30\",\"end\" : \"17:30\",\"dayOfWeek\" : \"3\" }").contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(
+                status().isOk()
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.degree").value("Enfermagem")).toString();
+        //TODO: see how to perform a put
+        assertEquals(result, explainer);
+    }
+
+
+
+    @Test
+    @VisibleForTesting
+    void languageExplainer() throws Exception {
+        Explainer explainer = new Explainer("Nikos Perris");
+        Language language = new Language("Portugues");
+        String jsonRequest = this.objectMapper.writeValueAsString("name: " + explainer.getName());
+        when(explainerService.createExplainer(explainer)).thenReturn(Optional.of(explainer));
+        when(languageService.createLanguage(language)).thenReturn(Optional.of(language));
+
+        System.out.println(jsonRequest);
+        String response = this.mockMvc.perform(
+                post("/explainer/language=Portugues")
+                        .content(jsonRequest)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                status().isOk()
+        ).andReturn().getResponse().getContentAsString();
+
+        Explainer responseExplainer = this.objectMapper.readValue(response, Explainer.class);
+        assertEquals(responseExplainer, explainer);
+
+
+
+    }
+
+
 }
