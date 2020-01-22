@@ -60,6 +60,7 @@ class ExplainerServiceTest {
         Set<Explainer> explainers = new HashSet<>();
         explainers.add(explainer1);
         explainers.add(explainer);
+        when(this.explainerService.addLanguage(explainer,language.getName())).thenReturn(Optional.of(explainer));
         when(this.explainerService.findById(1L)).thenReturn(Optional.of(explainer));
         assertNotNull(explainer);
         when(this.explainerService.findAll()).thenReturn(explainers);
@@ -67,7 +68,6 @@ class ExplainerServiceTest {
         when(this.explainerService.createExplainer(explainer)).thenReturn(Optional.of(explainer));
         when(this.explainerService.createAvailability(availability)).thenReturn(Optional.of(explainer));
         when(this.explainerService.addDegree(explainer,degree.getName())).thenReturn(Optional.of(explainer));
-        when(this.explainerService.addLanguage(explainer,language.getName())).thenReturn(Optional.of(explainer));
 
     }
 
