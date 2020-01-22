@@ -18,7 +18,7 @@ public class FilterExplainerByLanguage implements FilterI<Explainer> {
     @Override
     public Set<Explainer> filter(Set<Explainer> data) {
 
-        // No degree filter
+        // No language filter
         if (this.language == null)
             return data;
 
