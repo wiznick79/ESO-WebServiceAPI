@@ -4,6 +4,7 @@ import edu.ufp.nk.ws2.models.Explainer;
 import edu.ufp.nk.ws2.models.University;
 import edu.ufp.nk.ws2.services.ExplainerService;
 import edu.ufp.nk.ws2.services.UniversityService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,4 +67,17 @@ public class ExplainerController {
         return restTemplate.exchange(path, method, request, responseType);
     }
 
+
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @RequestMapping(value="/all", method = RequestMethod.GET)
+    public ResponseEntity<String> getAll() {
+        return ResponseEntity.ok(restTemplate.exchange("http://localhost:8081/college", HttpMethod.GET, null, String.class).getBody());
+    }
 }
