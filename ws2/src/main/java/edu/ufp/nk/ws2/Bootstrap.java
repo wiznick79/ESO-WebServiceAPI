@@ -19,11 +19,11 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     public void loadData() {
-        University university = new University("Universidade Fernando Pessoa", "http://localhost:8081/");
+        University university1 = new University("UFP", "http://localhost:8081/");
         University university2 = new University("ESEP", "http://localhost:8082/");
         University university3 = new University("ISEP", "http://localhost:8083/");
 
-        universityRepo.save(university);
+        universityRepo.save(university1);
         universityRepo.save(university2);
         universityRepo.save(university3);
 

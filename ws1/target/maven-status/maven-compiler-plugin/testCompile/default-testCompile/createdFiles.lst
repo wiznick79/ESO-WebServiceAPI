@@ -1,0 +1,9 @@
+edu\ufp\nk\ws1\controllers\StudentControllerTest.class
+edu\ufp\nk\ws1\controllers\CollegeControllerTest.class
+edu\ufp\nk\ws1\controllers\LanguageControllerTest.class
+edu\ufp\nk\ws1\controllers\CourseControllerTest.class
+edu\ufp\nk\ws1\controllers\DegreeControllerTest.class
+edu\ufp\nk\ws1\controllers\AvailabilityControllerTest.class
+edu\ufp\nk\ws1\controllers\AppointmentControllerTest.class
+edu\ufp\nk\ws1\controllers\ExplainerControllerTest.class
+edu\ufp\nk\ws1\repositories\StudentRepoTest.class

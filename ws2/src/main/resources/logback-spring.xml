@@ -27,8 +27,8 @@
         <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>
     </root>
-    <!-- LOG "edu.ufp.nk.ws1*" at TRACE level -->
-    <logger name="edu.ufp.nk.ws1" level="trace" additivity="false">
+    <!-- LOG "edu.ufp.nk.ws2*" at TRACE level -->
+    <logger name="edu.ufp.nk.ws2" level="trace" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
