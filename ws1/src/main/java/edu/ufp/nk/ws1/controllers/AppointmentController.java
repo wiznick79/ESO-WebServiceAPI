@@ -78,15 +78,16 @@ public class AppointmentController {
         Optional<Student> optionalStudent = this.studentService.findByName(appointment.getStudent().getName());
         if (optionalStudent.isEmpty())
             throw new NoSuchStudentException(appointment.getStudent().getName());
+
         Optional<Explainer> optionalExplainer = this.explainerService.findByName(appointment.getExplainer().getName());
         if (optionalExplainer.isEmpty())
             throw new NoSuchExplainerException(appointment.getExplainer().getName());
 
         Optional<Appointment> appointmentOptional = this.appointmentService.createAppointment(appointment);
-        if (appointmentOptional.isPresent()) {
-            return ResponseEntity.ok(appointmentOptional.get());
-        }
-        throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(), appointment.getDate());
+        if (appointmentOptional.isEmpty())
+            throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(), appointment.getDate());
+
+        return ResponseEntity.ok(appointmentOptional.get());
     }
 
     /*

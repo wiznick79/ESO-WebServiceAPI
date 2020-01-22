@@ -1,6 +1,7 @@
 package edu.ufp.nk.ws1.services;
 
 import edu.ufp.nk.ws1.models.Appointment;
+import edu.ufp.nk.ws1.models.Availability;
 import edu.ufp.nk.ws1.models.Explainer;
 import edu.ufp.nk.ws1.models.Student;
 import edu.ufp.nk.ws1.repositories.AppointmentRepo;
@@ -11,9 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AppointmentService {
@@ -43,22 +42,46 @@ public class AppointmentService {
     }
 
     public Optional<Appointment> createAppointment(Appointment appointment) {
-        Optional<Appointment> optionalAppointment = this.appointmentRepo.findByStartAndDate(appointment.getStart(), appointment.getDate());
         Optional<Explainer> optionalExplainer = this.explainerRepo.findByName(appointment.getExplainer().getName());
         Optional<Student> optionalStudent = this.studentRepo.findByName((appointment.getStudent().getName()));
 
-        if (optionalAppointment.isPresent() || optionalExplainer.isEmpty() || optionalStudent.isEmpty()) {
+        if (optionalExplainer.isEmpty() || optionalStudent.isEmpty()) {
             return Optional.empty();
         }
-        appointment.setExplainer(optionalExplainer.get());
-        appointment.setStudent(optionalStudent.get());
-        this.appointmentRepo.save(appointment);
 
-        return Optional.of(appointment);
+        Optional<Appointment> optionalAppointment = this.appointmentRepo.findByDateAndExplainerAndStudentAndStart(appointment.getDate(), optionalExplainer.get(), optionalStudent.get(), appointment.getStart());
+        Optional<Appointment> optionalAppointment2 = this.appointmentRepo.findByDateAndExplainerAndStart(appointment.getDate(), optionalExplainer.get(), appointment.getStart());
+        if(optionalAppointment.isPresent() || optionalAppointment2.isPresent()) {
+            return Optional.empty();
+        }
+
+        Set<Availability> availabilities = optionalExplainer.get().getAvailabilities();
+        for (Availability e : availabilities) {
+
+            // Has availabilitie
+            if(appointment.getDate().isEqual(e.getDay())
+                && (appointment.getStart().isAfter(e.getStart()) || appointment.getStart().equals(e.getStart()))
+                    && (appointment.getStart().isBefore(e.getEnd().minusHours(1)) || appointment.getStart().equals(e.getEnd().minusHours(1))))  {
+
+                // Its not Free
+                for (Appointment a: this.appointmentRepo.findAllByExplainer(optionalExplainer.get())){
+                    if(a.getDate().isEqual(appointment.getDate())
+                        && (appointment.getStart().isAfter( a.getStart()) ||  appointment.getStart() == a.getStart())
+                            && appointment.getStart().isBefore(a.getStart().plusHours(1))) {
+                                return Optional.empty();
+                        }
+                }
+
+                appointment.setExplainer(optionalExplainer.get());
+                appointment.setStudent(optionalStudent.get());
+                this.appointmentRepo.save(appointment);
+                return Optional.of(appointment);
+            }
+        }
+
+
+        return Optional.empty();
     }
-
-
-
 
     /*
     public Set<Appointment> filterAppointments (Map<String, String> searchParams){
