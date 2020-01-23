@@ -85,7 +85,7 @@ public class AppointmentController {
 
         Optional<Appointment> appointmentOptional = this.appointmentService.createAppointment(appointment);
         if (appointmentOptional.isEmpty())
-            throw new AppointmentController.AppointmentAlreadyExistsException(appointment.getStart(), appointment.getDate());
+            throw new AppointmentNotAvailableException(appointment.getStart(), appointment.getDate());
 
         return ResponseEntity.ok(appointmentOptional.get());
     }
@@ -101,10 +101,10 @@ public class AppointmentController {
         }
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Appointment already exists")
-    private static class AppointmentAlreadyExistsException extends RuntimeException {
-        public AppointmentAlreadyExistsException(LocalTime time, LocalDate date) {
-            super("An appointment on date: " + date + " " + time + " already exists");
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Explainer is not available at the requested time slot")
+    private static class AppointmentNotAvailableException extends RuntimeException {
+        public AppointmentNotAvailableException(LocalTime time, LocalDate date) {
+            super("Explainer is not available at the requested time slot " + date + " " + time );
         }
     }
 
