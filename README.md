@@ -2,5 +2,5 @@
 
 # ESO-WebServiceAPI
 
-Project for Software Engineering, 2019-2020
+Project for Software Engineering, 2019-2020,
 Universidade Fernando Pessoa
